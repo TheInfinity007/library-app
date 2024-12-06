@@ -1,4 +1,5 @@
 import React from 'react';
+import { ReturnBook } from './ReturnBook';
 
 export const Carousel = () => {
     return (
@@ -15,46 +16,23 @@ export const Carousel = () => {
                 <div className="carousel-inner">
                     <div className="carousel-item active">
                         <div className="row d-flex justify-content-center align-item-center">
-                            <div className="col-xs-6 col-sm-6 col-md-4 col-lg-3 mb-3">
-                                <div className="text-center">
-                                    <img
-                                        src={require('./../../Images/BooksImages/book-luv2code-1000.png')}
-                                        alt="Book"
-                                        width="151"
-                                        height="233"
-                                    />
-                                    <h6 className="mt-2">Book</h6>
-                                    <p>Love2Code</p>
-                                    <a
-                                        href=""
-                                        className="btn main-color text-white"
-                                    >
-                                        Reserve
-                                    </a>
-                                </div>
-                            </div>
+                            <ReturnBook />
+                            <ReturnBook />
+                            <ReturnBook />
                         </div>
                     </div>
                     <div className="carousel-item">
                         <div className="row d-flex justify-content-center align-item-center">
-                            <div className="col-xs-6 col-sm-6 col-md-4 col-lg-3 mb-3">
-                                <div className="text-center">
-                                    <img
-                                        src={require('./../../Images/BooksImages/book-luv2code-1000.png')}
-                                        alt="Book"
-                                        width="151"
-                                        height="233"
-                                    />
-                                    <h6 className="mt-2">Book</h6>
-                                    <p>Love2Code</p>
-                                    <a
-                                        href=""
-                                        className="btn main-color text-white"
-                                    >
-                                        Reserve
-                                    </a>
-                                </div>
-                            </div>
+                            <ReturnBook />
+                            <ReturnBook />
+                            <ReturnBook />
+                        </div>
+                    </div>
+                    <div className="carousel-item">
+                        <div className="row d-flex justify-content-center align-item-center">
+                            <ReturnBook />
+                            <ReturnBook />
+                            <ReturnBook />
                         </div>
                     </div>
 
@@ -87,21 +65,7 @@ export const Carousel = () => {
             {/* Mobile */}
             <div className="d-lg-none mt-3">
                 <div className="row d-flex justify-content-center align-item-center">
-                    <div className="text-center">
-                        <img
-                            src={require('./../../Images/BooksImages/book-luv2code-1000.png')}
-                            alt="book"
-                            width="151"
-                            height="233"
-                        />
-                        <h6 className="mt-2">
-                            <b>Book</b>
-                        </h6>
-                        <p>Love2Code</p>
-                        <a href="" className="btn main-color text-white">
-                            Reserve
-                        </a>
-                    </div>
+                    <ReturnBook />
                 </div>
             </div>
 
