@@ -2,7 +2,7 @@ import React from 'react';
 import BookModel from '../../../models/BookModel';
 
 export const ReturnBook: React.FC<{ book: BookModel }> = (props) => {
-    const { description, title, img } = props.book;
+    const { author, title, img } = props.book;
 
     return (
         <div className="col-xs-6 col-sm-6 col-md-4 col-lg-3 mb-3">
@@ -18,7 +18,7 @@ export const ReturnBook: React.FC<{ book: BookModel }> = (props) => {
                     />
                 )}
                 <h6 className="mt-2">{title}</h6>
-                <p>{description}</p>
+                <p>{author}</p>
                 <a href="" className="btn main-color text-white">
                     Reserve
                 </a>
