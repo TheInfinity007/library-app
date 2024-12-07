@@ -55,7 +55,10 @@ export const SearchBooksPage = () => {
             setIsLoading(false);
             setHttpError(err.message);
         });
-    }, []);
+
+        // scroll the page to top
+        window.scrollTo(0, 0);
+    }, [currentPage]);
 
     // Handle Loading
     if (isLoading) {
@@ -145,9 +148,12 @@ export const SearchBooksPage = () => {
                     </div>
 
                     <div className="mt-3">
-                        <h5>Number of results: (22)</h5>
+                        <h5>Number of results: ({totalAmountOfBooks})</h5>
                     </div>
-                    <p>1 to 5 of 22 items:</p>
+                    <p>
+                        {indexOfFirstBook + 1} to {lastItem} of{' '}
+                        {totalAmountOfBooks} items:
+                    </p>
                     {books.map((book) => (
                         <SearchBook book={book} key={book.id} />
                     ))}
