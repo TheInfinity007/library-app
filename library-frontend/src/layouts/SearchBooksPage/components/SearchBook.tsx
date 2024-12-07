@@ -25,6 +25,23 @@ export const SearchBook: React.FC<{ book: BookModel }> = (props) => {
                             />
                         )}
                     </div>
+                    <div className="d-lg-none d-flex justify-content-center align-items-center">
+                        {img ? (
+                            <img
+                                src={img}
+                                width="123"
+                                height="196"
+                                alt="Book"
+                            />
+                        ) : (
+                            <img
+                                src={require('../../../Images/BooksImages/book-luv2code-1000.png')}
+                                width="123"
+                                height="196"
+                                alt="Book"
+                            />
+                        )}
+                    </div>
                 </div>
 
                 <div className="col-md-6">
