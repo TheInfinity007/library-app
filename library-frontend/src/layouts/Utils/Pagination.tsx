@@ -43,6 +43,7 @@ export const Pagination: React.FC<{
                 </li>
                 {pageNumbers.map((number) => (
                     <li
+                        key={number}
                         onClick={() => paginate(number)}
                         className={
                             'page-item' +
