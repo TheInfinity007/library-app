@@ -16,6 +16,8 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     findBy: Indicates a search query (like a SELECT statement).
     Title: Refers to the title field of the Book entity.
     Containing: Informs Spring Data that the query should perform a partial match (LIKE) rather than an exact match (=).
+
+    Pagination: will also work as the pageable is also passed
      */
     Page<Book> findByTitleContaining(@RequestParam("title") String title, Pageable pageable);
 }
