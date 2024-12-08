@@ -3,12 +3,10 @@ import { ExploreTopBooks } from './components/ExploreTopBooks';
 import { Carousel } from './components/Carousel';
 import { Heros } from './components/Heros';
 import { LibraryServices } from './components/LibraryServices';
-import { SearchBooksPage } from '../SearchBooksPage/SearchBooksPage';
 
 export const HomePage = () => {
     return (
         <>
-            <SearchBooksPage />
             <ExploreTopBooks />
             <Carousel />
             <Heros />
