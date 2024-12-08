@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 export const ExploreTopBooks = () => {
     return (
@@ -11,13 +12,13 @@ export const ExploreTopBooks = () => {
                     <p className="col-md-8 fs-4">
                         Where would you like to go next?
                     </p>
-                    <a
-                        href="#"
+                    <Link
+                        to="/search"
                         className="btn main-color btn-lg text-white"
                         type="button"
                     >
                         Explore top books
-                    </a>
+                    </Link>
                 </div>
             </div>
         </div>
