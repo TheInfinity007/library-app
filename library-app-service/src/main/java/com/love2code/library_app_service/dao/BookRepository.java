@@ -20,4 +20,9 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     Pagination: will also work as the pageable is also passed
      */
     Page<Book> findByTitleContaining(@RequestParam("title") String title, Pageable pageable);
+
+    /*
+        Search by category with equal match
+    */
+    Page<Book> findByCategory(@RequestParam("category") String category, Pageable pageable);
 }
