@@ -11,14 +11,37 @@ export const StarsReview: React.FC<{ rating: number; size: number }> = (
     let halfStars = 0;
     let emptyStars = 0;
 
-    // if(rating)
+    if (rating > 0 && rating <= 5) {
+        for (let i = 0; i < 5; i++) {
+            if (rating - 1 >= 0) {
+                fullStars += 1;
+                rating -= 1;
+            } else if (rating === 0.5) {
+                halfStars += 1;
+                rating -= 0.5;
+            } else if (rating === 0) {
+                emptyStars++;
+            } else {
+                break;
+            }
+        }
+    } else {
+        emptyStars = 5;
+    }
 
     return (
         <div>
-            <StarFilled size={size} />
-            <StarFilled size={size} />
-            <StarHalfFilled size={size} />
-            <StarEmpty size={size} />
+            {Array.from({ length: fullStars }, (_, i) => (
+                <StarFilled size={size} key={i} />
+            ))}
+
+            {Array.from({ length: halfStars }, (_, i) => (
+                <StarHalfFilled size={size} key={i} />
+            ))}
+
+            {Array.from({ length: emptyStars }, (_, i) => (
+                <StarEmpty size={size} key={i} />
+            ))}
         </div>
     );
 };
