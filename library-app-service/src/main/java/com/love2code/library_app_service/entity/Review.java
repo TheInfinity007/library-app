@@ -27,7 +27,7 @@ public class Review {
     private double rating;
 
     @Column(name = "book_id")
-    private String bookId;
+    private Long bookId;
 
     @Column(name = "review_description")
     private String reviewDescription;
