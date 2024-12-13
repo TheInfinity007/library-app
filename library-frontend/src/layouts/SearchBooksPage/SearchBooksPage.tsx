@@ -17,7 +17,6 @@ export const SearchBooksPage = () => {
     const [categorySelection, setCategorySelection] = useState('Book category');
 
     useEffect(() => {
-        console.log('UseEffect called', searchUrl, currentPage);
         const fetchBooks = async () => {
             const baseUrl: string = 'http://localhost:8080/api/books';
 

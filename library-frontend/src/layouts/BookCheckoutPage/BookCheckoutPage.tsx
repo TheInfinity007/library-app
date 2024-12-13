@@ -16,7 +16,7 @@ export const BookCheckoutPage = () => {
     const [totalStars, setTotalStars] = useState(0);
     const [isLoadingReview, setIsLoadingReview] = useState(true);
 
-    const bookId = Number(window.location.pathname.split('/')[2]);
+    const bookId = window.location.pathname.split('/')[2];
 
     useEffect(() => {
         const fetchBook = async () => {
@@ -141,13 +141,14 @@ export const BookCheckoutPage = () => {
                             <h2>{book?.title}</h2>
                             <h5 className="text-primary">{book?.author}</h5>
                             <p className="lead">{book?.description}</p>
-                            <StarsReview rating={4.5} size={32} />
+                            <StarsReview rating={totalStars} size={32} />
                         </div>
                     </div>
 
                     <CheckoutAndReviewBox book={book} mobile={false} />
                 </div>
                 <hr />
+                <LatestReviews reviews={reviews} mobile={false} bookId={book?.id}/>
             </div>
 
             <div className="container d-lg-none mt-5">
@@ -173,14 +174,15 @@ export const BookCheckoutPage = () => {
                         <h2>{book?.title}</h2>
                         <h5 className="text-primary">{book?.author}</h5>
                         <p className="lead">{book?.description}</p>
-                        <StarsReview rating={3.5} size={32} />
+                        <StarsReview rating={totalStars} size={32} />
                     </div>
                 </div>
                 <CheckoutAndReviewBox book={book} mobile={true} />
                 <hr />
+                <LatestReviews reviews={reviews} mobile={true} bookId={book?.id}/>
             </div>
 
-            <LatestReviews reviews={reviews} mobile={false} bookId={bookId}/>
+            
         </div>
     );
 };
