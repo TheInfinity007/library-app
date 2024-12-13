@@ -3,14 +3,19 @@ import BookModel from '../../models/BookModel';
 import { SpinnerLoading } from '../Utils/SpinnerLoading';
 import { StarsReview } from '../Utils/StarsReview';
 import { CheckoutAndReviewBox } from './CheckoutAndReviewBox';
+import ReviewModel from '../../models/ReviewModel';
 
 export const BookCheckoutPage = () => {
     const [book, setBook] = useState<BookModel>();
     const [isLoading, setIsLoading] = useState(true);
     const [httpError, setHttpError] = useState(null);
 
+    // Review State
+    const [reviews, setReviews] = useState<ReviewModel[]>([]);
+    const [totalStars, setTotalStars] = useState(0);
+    const [isLoadingReview, setIsLoadingReview] = useState(true);
+
     const bookId = window.location.pathname.split('/')[2];
-    console.log('bookID', bookId);
 
     useEffect(() => {
         const fetchBook = async () => {
@@ -47,8 +52,56 @@ export const BookCheckoutPage = () => {
         });
     }, []);
 
+    useEffect(() => {
+        const fetchReviews = async () => {
+            const reviewUrl: string = `http://localhost:8080/api/reviews/search/findByBookId?bookId=${bookId}`;
+
+            const responseReviews = await fetch(reviewUrl);
+
+            if (!responseReviews.ok) {
+                throw new Error('Something went wrong!');
+            }
+
+            const responseJsonReviews = await responseReviews.json();
+            const responseData = responseJsonReviews._embedded.reviews;
+
+            const loadedReviews: ReviewModel[] = [];
+            let weightedStarReviews: number = 0;
+
+            for (const review of responseData) {
+                loadedReviews.push({
+                    id: review.id,
+                    userEmail: review.userEmail,
+                    date: review.date,
+                    rating: review.rating,
+                    bookId: review.bookId,
+                    reviewDescription: review.reviewDescription,
+                });
+
+                weightedStarReviews = weightedStarReviews + review.rating;
+            }
+
+            if (loadedReviews) {
+                const round = (
+                    Math.round(
+                        (weightedStarReviews / loadedReviews.length) * 2
+                    ) / 2
+                ).toFixed(1);
+                setTotalStars(Number(round));
+            }
+
+            setReviews(loadedReviews);
+            setIsLoadingReview(false);
+        };
+
+        fetchReviews().catch((err: any) => {
+            setIsLoading(false);
+            setHttpError(err.message);
+        });
+    }, []);
+
     // Handle Loading
-    if (isLoading) {
+    if (isLoading || isLoadingReview) {
         return <SpinnerLoading />;
     }
 
