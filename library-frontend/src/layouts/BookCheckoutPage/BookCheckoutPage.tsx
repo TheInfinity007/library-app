@@ -4,6 +4,7 @@ import { SpinnerLoading } from '../Utils/SpinnerLoading';
 import { StarsReview } from '../Utils/StarsReview';
 import { CheckoutAndReviewBox } from './CheckoutAndReviewBox';
 import ReviewModel from '../../models/ReviewModel';
+import { LatestReviews } from './LatestReviews';
 
 export const BookCheckoutPage = () => {
     const [book, setBook] = useState<BookModel>();
@@ -15,7 +16,7 @@ export const BookCheckoutPage = () => {
     const [totalStars, setTotalStars] = useState(0);
     const [isLoadingReview, setIsLoadingReview] = useState(true);
 
-    const bookId = window.location.pathname.split('/')[2];
+    const bookId = Number(window.location.pathname.split('/')[2]);
 
     useEffect(() => {
         const fetchBook = async () => {
@@ -178,6 +179,8 @@ export const BookCheckoutPage = () => {
                 <CheckoutAndReviewBox book={book} mobile={true} />
                 <hr />
             </div>
+
+            <LatestReviews reviews={reviews} mobile={false} bookId={bookId}/>
         </div>
     );
 };

@@ -1,6 +1,7 @@
 import React from 'react';
 import ReviewModel from '../../models/ReviewModel';
 import { Link } from 'react-router-dom';
+import Review from './Review';
 
 export const LatestReviews: React.FC<{
     reviews: ReviewModel[];
@@ -13,6 +14,7 @@ export const LatestReviews: React.FC<{
             <div className={mobile ? '' : 'col-sm-2 col-md-2'}>
                 <h2>Latest Reviews: </h2>
             </div>
+            
             <div className="col-sm-10 col-md-10">
                 {reviews.length > 0 ? (
                     <>
