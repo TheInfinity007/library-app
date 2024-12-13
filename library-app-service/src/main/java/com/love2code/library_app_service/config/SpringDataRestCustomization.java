@@ -20,8 +20,9 @@ public class SpringDataRestCustomization implements RepositoryRestConfigurer {
         config.exposeIdsFor(Review.class);
 
         disableHttpMethods(Book.class, config, theUnsupportedActions);
+        disableHttpMethods(Review.class, config, theUnsupportedActions);
 
-       // Configure CORS Mapping
+        // Configure CORS Mapping
         cors.addMapping(config.getBasePath() + "/**")
                 .allowedOrigins(theAllowedOrigins);
     }
