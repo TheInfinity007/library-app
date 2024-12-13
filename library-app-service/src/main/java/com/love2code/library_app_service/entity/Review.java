@@ -6,9 +6,9 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
 
-@Entity
 @Table(name = "review")
 @Data
+@Entity
 public class Review {
 
     @Id

@@ -1,6 +1,7 @@
 package com.love2code.library_app_service.config;
 
 import com.love2code.library_app_service.entity.Book;
+import com.love2code.library_app_service.entity.Review;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
@@ -16,6 +17,7 @@ public class SpringDataRestCustomization implements RepositoryRestConfigurer {
         HttpMethod[] theUnsupportedActions = { HttpMethod.POST, HttpMethod.PATCH, HttpMethod.DELETE, HttpMethod.PUT };
 
         config.exposeIdsFor(Book.class);
+        config.exposeIdsFor(Review.class);
 
         disableHttpMethods(Book.class, config, theUnsupportedActions);
 
