@@ -24,7 +24,7 @@ public class BookService {
 
     public Book checkoutBook(String userEmail, Long bookId) throws Exception {
         Optional<Book> bookTemp = bookRepository.findById(bookId);
-        if (bookTemp.isEmpty()) {
+        if (!bookTemp.isPresent()) {
             throw new Exception("Book doesn't exist");
         }
 
@@ -32,7 +32,7 @@ public class BookService {
 
         Book book = bookTemp.get();
 
-        if (validateCheckout != null || bookTemp.get().getCopiesAvailable() <= 0) {
+        if (validateCheckout != null || book.getCopiesAvailable() <= 0) {
             throw new Exception("Book doesn't exist or already checked out by user");
         }
 

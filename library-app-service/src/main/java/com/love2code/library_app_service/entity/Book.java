@@ -33,4 +33,16 @@ public class Book {
 
     @Column(name = "img")
     private String img;
+
+    public Long getId() {
+        return id;
+    }
+
+    public int getCopiesAvailable() {
+        return copiesAvailable;
+    }
+
+    public void setCopiesAvailable(int copiesAvailable) {
+        this.copiesAvailable = copiesAvailable;
+    }
 }
