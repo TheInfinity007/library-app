@@ -1,9 +1,11 @@
 package com.love2code.library_app_service.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
 @Table(name = "checkout")
+@Data
 public class Checkout {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
