@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -60,7 +61,10 @@ public class BookService {
             return true;
         }
         return false;
+    }
 
-
+    public int currentLoansCount(String userEmail) {
+        List<Checkout> checkoutBookList = checkoutRepository.findBooksByUserEmail(userEmail);
+        return checkoutBookList.size();
     }
 }
