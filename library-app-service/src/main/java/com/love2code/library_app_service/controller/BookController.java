@@ -2,6 +2,7 @@ package com.love2code.library_app_service.controller;
 
 import com.love2code.library_app_service.entity.Book;
 import com.love2code.library_app_service.service.BookService;
+import com.love2code.library_app_service.utils.ExtractJWT;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,20 +18,23 @@ public class BookController {
     }
 
     @PutMapping("/secure/checkout")
-    public Book checkoutBook(@RequestParam Long bookId) throws Exception {
-        String userEmail = "testuser@yopmail.com";
+    public Book checkoutBook(@RequestHeader(value = "Authorization") String token,
+                             @RequestParam Long bookId) throws Exception {
+        String userEmail = ExtractJWT.payloadJWTExtraction(token, "sub");
         return bookService.checkoutBook(userEmail, bookId);
     }
-    
+
     @GetMapping("/secure/ischeckedout/byuser")
-    public Boolean checkoutBookByUser(@RequestParam Long bookId) {
-        String userEmail = "testuser@yopmail.com";
+    public Boolean checkoutBookByUser(@RequestHeader(name = "Authorization") String token,
+                                      @RequestParam Long bookId) {
+        String userEmail = ExtractJWT.payloadJWTExtraction(token, "sub");
         return bookService.checkoutBookByUser(userEmail, bookId);
     }
 
     @GetMapping("/secure/currentloans/count")
-    public int currentLoansCount() {
-        String userEmail = "testuser@yopmail.com";
+    public int currentLoansCount(@RequestHeader(name = "Authorization") String token) {
+        String userEmail = ExtractJWT.payloadJWTExtraction(token, "sub");
+
         return bookService.currentLoansCount(userEmail);
     }
 }
