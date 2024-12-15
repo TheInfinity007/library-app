@@ -22,34 +22,16 @@ public class SecurityConfiguration {
         http.csrf(AbstractHttpConfigurer::disable);
 
         // Protect endpoints at /api/<type>/secure/*
-//        http
-//                .securityMatcher("/api/books/secure/**")
-//                .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> authorizationManagerRequestMatcherRegistry
-//                        .requestMatchers("/api/books/secure/**")
-//                        .authenticated()
-//                )
-//                .oauth2ResourceServer(OAuth2ResourceServerConfigurer -> OAuth2ResourceServerConfigurer
-//                        .jwt()
-//                );
-
-//        http
-//                .authorizeRequests()
-//                .requestMatchers("/api/books/secure/**")
-//                .authenticated()
-//                .and()
-//                .oauth2ResourceServer()
-//                .jwt();
-
         http
                 .authorizeHttpRequests(configurer -> configurer
+                        // enable auth for mentioned routes matching with following pattern
                         .requestMatchers("/api/books/secure/**")
                         .authenticated()
-                        .anyRequest().permitAll()
                 )
-                .oauth2ResourceServer(oauth2ResourceServer -> oauth2ResourceServer
+                // enables REST API support for JWT bearer tokens
+                .oauth2ResourceServer(OAuth2ResourceServerConfigurer -> OAuth2ResourceServerConfigurer
                         .jwt(Customizer.withDefaults())
                 );
-
 
         // Add CORS filters
         http.cors(httpSecurityCorsConfigurer -> {
@@ -58,7 +40,6 @@ public class SecurityConfiguration {
         // Add content negotiation strategy
         http.setSharedObject(ContentNegotiationStrategy.class,
                 new HeaderContentNegotiationStrategy());
-
 
         // Force a non-empty response body for 401's to make the response friendly
         Okta.configureResourceServer401ResponseBody(http);
