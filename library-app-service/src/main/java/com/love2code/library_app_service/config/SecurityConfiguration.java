@@ -27,6 +27,8 @@ public class SecurityConfiguration {
                         // enable auth for mentioned routes matching with following pattern
                         .requestMatchers("/api/books/secure/**")
                         .authenticated()
+                        // allow for rest of the routes without auth
+                        .anyRequest().permitAll()
                 )
                 // enables REST API support for JWT bearer tokens
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer -> OAuth2ResourceServerConfigurer
