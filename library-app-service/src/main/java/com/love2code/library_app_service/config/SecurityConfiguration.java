@@ -25,7 +25,7 @@ public class SecurityConfiguration {
         http
                 .authorizeHttpRequests(configurer -> configurer
                         // enable auth for mentioned routes matching with following pattern
-                        .requestMatchers("/api/books/secure/**")
+                        .requestMatchers("/api/books/secure/**", "/api/reviews/secure/**")
                         .authenticated()
                         // allow for rest of the routes without auth
                         .anyRequest().permitAll()
