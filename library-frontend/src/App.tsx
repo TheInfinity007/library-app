@@ -12,6 +12,8 @@ import { oktaConfig } from './lib/oktaConfig';
 import { LoginCallback, Security } from '@okta/okta-react';
 import LoginWidget from './Auth/LoginWidget';
 import { ReviewListPage } from './layouts/BookCheckoutPage/ReviewListPage/ReviewListPage';
+import { ShelfPage } from './layouts/ShelfPage/ShelfPage';
+import { RequiredAuth } from './Auth/RequiredAuth';
 
 const oktaAuth = new OktaAuth(oktaConfig);
 
@@ -52,12 +54,20 @@ export const App = () => {
                         />
                         <Route
                             path="/login"
-                            element={<LoginWidget config={oktaConfig} />}
+                            element={
+                                <LoginWidget
+                                    config={oktaConfig}
+                                    originalUri={'/'}
+                                />
+                            }
                         />
                         <Route
                             path="/login/callback"
                             element={<LoginCallback />}
                         />
+                        <Route path="/shelf" element={<RequiredAuth />}>
+                            <Route path="" element={<ShelfPage />} />
+                        </Route>
                     </Routes>
                 </div>
                 <Footer />
