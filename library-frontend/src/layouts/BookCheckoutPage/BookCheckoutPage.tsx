@@ -19,6 +19,9 @@ export const BookCheckoutPage = () => {
     const [totalStars, setTotalStars] = useState(0);
     const [isLoadingReview, setIsLoadingReview] = useState(true);
 
+    const [isReviewLeft, setIsReviewLeft] = useState(false);
+    const [isLoadingUserReview, setIsLoadingUserReview] = useState(true);
+
     // Loans count State
     const [currentLoansCount, setCurrentLoansCount] = useState(0);
     const [isLoadingCurrentLoansCount, setIsLoadingCurrentLoansCount] =
@@ -67,7 +70,7 @@ export const BookCheckoutPage = () => {
         });
     }, [isCheckedOut, bookId]);
 
-    //Fetch Reviews use effect
+    // Fetch Reviews use effect
     useEffect(() => {
         const fetchReviews = async () => {
             const reviewUrl: string = `http://localhost:8080/api/reviews/search/findByBookId?bookId=${bookId}`;
@@ -114,7 +117,45 @@ export const BookCheckoutPage = () => {
             setIsLoading(false);
             setHttpError(err.message);
         });
-    }, []);
+    }, [bookId, isReviewLeft]);
+
+    // Fetch User Review use effect
+    useEffect(() => {
+        const fetchUserReview = async () => {
+            if (!authState?.isAuthenticated) {
+                setIsLoadingUserReview(false);
+                return;
+            }
+
+            const baseUrl: string = `http://localhost:8080/api/reviews`;
+
+            const url: string = `${baseUrl}/secure/user/book?bookId=${bookId}`;
+
+            const token = authState?.accessToken?.accessToken;
+            const requestOptions = {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+            };
+            const response: any = await fetch(url, requestOptions);
+
+            if (!response.ok) {
+                throw new Error('Something went wrong!');
+            }
+
+            const hasReviewed = await response.json();
+
+            setIsReviewLeft(hasReviewed);
+            setIsLoadingUserReview(false);
+        };
+
+        fetchUserReview().catch((err: any) => {
+            setIsLoadingUserReview(false);
+            setHttpError(err.message);
+        });
+    }, [authState, bookId]);
 
     //Fetch Current Loans Count use effect
     useEffect(() => {
@@ -192,7 +233,13 @@ export const BookCheckoutPage = () => {
     }, [authState, bookId]);
 
     // Handle Loading
-    if (isLoading || isLoadingReview || isLoadingCurrentLoansCount) {
+    if (
+        isLoading ||
+        isLoadingReview ||
+        isLoadingBookCheckedOut ||
+        isLoadingCurrentLoansCount ||
+        isLoadingUserReview
+    ) {
         return <SpinnerLoading />;
     }
 
