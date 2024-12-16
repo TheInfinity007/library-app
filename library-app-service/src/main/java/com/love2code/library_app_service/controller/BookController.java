@@ -1,16 +1,19 @@
 package com.love2code.library_app_service.controller;
 
 import com.love2code.library_app_service.entity.Book;
+import com.love2code.library_app_service.responsemodels.ShelfCurrentLoansResponse;
 import com.love2code.library_app_service.service.BookService;
 import com.love2code.library_app_service.utils.ExtractJWT;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @CrossOrigin("http://localhost:3000")
 @RestController
 @RequestMapping("/api/books")
 public class BookController {
-    private BookService bookService;
+    private final BookService bookService;
 
     @Autowired
     public BookController(BookService bookService) {
@@ -36,5 +39,13 @@ public class BookController {
         String userEmail = ExtractJWT.payloadJWTExtraction(token, "sub");
 
         return bookService.currentLoansCount(userEmail);
+    }
+
+    @GetMapping("/secure/currentloans")
+    public List<ShelfCurrentLoansResponse> currentLoans(
+            @RequestHeader(name = "Authorization") String token) throws Exception {
+        String userEmail = ExtractJWT.payloadJWTExtraction(token, "sub");
+
+        return bookService.currentLoans(userEmail);
     }
 }
