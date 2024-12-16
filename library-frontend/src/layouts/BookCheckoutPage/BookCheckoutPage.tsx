@@ -65,7 +65,7 @@ export const BookCheckoutPage = () => {
             setIsLoading(false);
             setHttpError(err.message);
         });
-    }, []);
+    }, [isCheckedOut, bookId]);
 
     //Fetch Reviews use effect
     useEffect(() => {
@@ -151,7 +151,7 @@ export const BookCheckoutPage = () => {
             setIsLoadingCurrentLoansCount(false);
             setHttpError(err.message);
         });
-    }, [authState]);
+    }, [authState, isCheckedOut]);
 
     //Fetch Book Checked Out use effect
     useEffect(() => {
@@ -205,6 +205,30 @@ export const BookCheckoutPage = () => {
         );
     }
 
+    const checkoutBook = async () => {
+        const baseUrl: string = `http://localhost:8080/api/books`;
+
+        const url: string = `${baseUrl}/secure/checkout?bookId=${bookId}`;
+
+        const token = authState?.accessToken?.accessToken;
+        const requestOptions = {
+            method: 'PUT',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({}),
+        };
+
+        const response: any = await fetch(url, requestOptions);
+
+        if (!response.ok) {
+            throw new Error('Something went wrong!');
+        }
+
+        setIsCheckedOut(true);
+    };
+
     return (
         <div>
             <div className="container d-none d-lg-block">
@@ -241,6 +265,7 @@ export const BookCheckoutPage = () => {
                         currentLoansCount={currentLoansCount}
                         isAuthenticated={!!authState?.isAuthenticated}
                         isCheckedOut={isCheckedOut}
+                        checkoutBook={checkoutBook}
                     />
                 </div>
                 <hr />
@@ -283,6 +308,7 @@ export const BookCheckoutPage = () => {
                     currentLoansCount={currentLoansCount}
                     isAuthenticated={!!authState?.isAuthenticated}
                     isCheckedOut={isCheckedOut}
+                    checkoutBook={checkoutBook}
                 />
                 <hr />
                 <LatestReviews
