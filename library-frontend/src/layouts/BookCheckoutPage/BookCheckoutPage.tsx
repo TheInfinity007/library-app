@@ -120,6 +120,7 @@ export const BookCheckoutPage = () => {
     useEffect(() => {
         const fetchUserCurrentLoansCount = async () => {
             if (!authState?.isAuthenticated) {
+                setIsLoadingCurrentLoansCount(false);
                 return;
             }
 
@@ -156,6 +157,7 @@ export const BookCheckoutPage = () => {
     useEffect(() => {
         const fetchUserCheckedOutBook = async () => {
             if (!authState?.isAuthenticated) {
+                setIsLoadingBookCheckedOut(false);
                 return;
             }
 
