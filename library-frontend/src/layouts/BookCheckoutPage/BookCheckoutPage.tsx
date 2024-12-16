@@ -6,6 +6,7 @@ import { CheckoutAndReviewBox } from './CheckoutAndReviewBox';
 import ReviewModel from '../../models/ReviewModel';
 import { LatestReviews } from './LatestReviews';
 import { useOktaAuth } from '@okta/okta-react';
+import ReviewRequestModel from '../../models/ReviewRequestModel';
 
 export const BookCheckoutPage = () => {
     const { authState } = useOktaAuth();
@@ -276,6 +277,41 @@ export const BookCheckoutPage = () => {
         setIsCheckedOut(true);
     };
 
+    const submitReview = async (
+        starInput: number,
+        reviewDescription: string
+    ) => {
+        let reviewBookId: number = book?.id || 0;
+
+        const reviewRequestModel = new ReviewRequestModel(
+            starInput,
+            reviewBookId,
+            reviewDescription
+        );
+
+        const baseUrl: string = `http://localhost:8080/api/reviews`;
+
+        const url: string = `${baseUrl}/secure`;
+
+        const token = authState?.accessToken?.accessToken;
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(reviewRequestModel),
+        };
+
+        const response: any = await fetch(url, requestOptions);
+
+        if (!response.ok) {
+            throw new Error('Something went wrong!');
+        }
+
+        setIsReviewLeft(true);
+    };
+
     return (
         <div>
             <div className="container d-none d-lg-block">
@@ -314,6 +350,7 @@ export const BookCheckoutPage = () => {
                         isCheckedOut={isCheckedOut}
                         checkoutBook={checkoutBook}
                         isReviewLeft={isReviewLeft}
+                        submitReview={submitReview}
                     />
                 </div>
                 <hr />
@@ -358,6 +395,7 @@ export const BookCheckoutPage = () => {
                     isCheckedOut={isCheckedOut}
                     checkoutBook={checkoutBook}
                     isReviewLeft={isReviewLeft}
+                    submitReview={submitReview}
                 />
                 <hr />
                 <LatestReviews
