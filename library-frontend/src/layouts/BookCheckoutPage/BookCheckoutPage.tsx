@@ -5,8 +5,11 @@ import { StarsReview } from '../Utils/StarsReview';
 import { CheckoutAndReviewBox } from './CheckoutAndReviewBox';
 import ReviewModel from '../../models/ReviewModel';
 import { LatestReviews } from './LatestReviews';
+import { useOktaAuth } from '@okta/okta-react';
 
 export const BookCheckoutPage = () => {
+    const { authState } = useOktaAuth();
+
     const [book, setBook] = useState<BookModel>();
     const [isLoading, setIsLoading] = useState(true);
     const [httpError, setHttpError] = useState(null);
@@ -16,8 +19,14 @@ export const BookCheckoutPage = () => {
     const [totalStars, setTotalStars] = useState(0);
     const [isLoadingReview, setIsLoadingReview] = useState(true);
 
+    // Loans count State
+    const [currentLoansCount, setCurrentLoansCount] = useState(0);
+    const [isLoadingCurrentLoansCount, setIsLoadingCurrentLoansCount] =
+        useState(true);
+
     const bookId = window.location.pathname.split('/')[2];
 
+    //Fetch Book use effect
     useEffect(() => {
         const fetchBook = async () => {
             const baseUrl: string = `http://localhost:8080/api/books`;
@@ -53,6 +62,7 @@ export const BookCheckoutPage = () => {
         });
     }, []);
 
+    //Fetch Reviews use effect
     useEffect(() => {
         const fetchReviews = async () => {
             const reviewUrl: string = `http://localhost:8080/api/reviews/search/findByBookId?bookId=${bookId}`;
@@ -101,8 +111,44 @@ export const BookCheckoutPage = () => {
         });
     }, []);
 
+    //Fetch Current Loans Count use effect
+    useEffect(() => {
+        const fetchUserCurrentLoansCount = async () => {
+            if (!authState?.isAuthenticated) {
+                return;
+            }
+
+            const baseUrl: string = `http://localhost:8080/api/books`;
+
+            const url: string = `${baseUrl}/secure/currentloans/count`;
+
+            const token = authState?.accessToken?.accessToken;
+            const requestOptions = {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+            };
+            const response: any = await fetch(url, requestOptions);
+
+            if (!response.ok) {
+                throw new Error('Something went wrong!');
+            }
+
+            const res = await response.json();
+            setCurrentLoansCount(res);
+            setIsLoadingCurrentLoansCount(false);
+        };
+
+        fetchUserCurrentLoansCount().catch((err: any) => {
+            setIsLoadingCurrentLoansCount(false);
+            setHttpError(err.message);
+        });
+    }, [authState]);
+
     // Handle Loading
-    if (isLoading || isLoadingReview) {
+    if (isLoading || isLoadingReview || isLoadingCurrentLoansCount) {
         return <SpinnerLoading />;
     }
 
@@ -145,10 +191,14 @@ export const BookCheckoutPage = () => {
                         </div>
                     </div>
 
-                    <CheckoutAndReviewBox book={book} mobile={false} />
+                    <CheckoutAndReviewBox book={book} mobile={false} currentLoansCount={currentLoansCount}/>
                 </div>
                 <hr />
-                <LatestReviews reviews={reviews} mobile={false} bookId={book?.id}/>
+                <LatestReviews
+                    reviews={reviews}
+                    mobile={false}
+                    bookId={book?.id}
+                />
             </div>
 
             <div className="container d-lg-none mt-5">
@@ -177,12 +227,14 @@ export const BookCheckoutPage = () => {
                         <StarsReview rating={totalStars} size={32} />
                     </div>
                 </div>
-                <CheckoutAndReviewBox book={book} mobile={true} />
+                <CheckoutAndReviewBox book={book} mobile={true} currentLoansCount={currentLoansCount} />
                 <hr />
-                <LatestReviews reviews={reviews} mobile={true} bookId={book?.id}/>
+                <LatestReviews
+                    reviews={reviews}
+                    mobile={true}
+                    bookId={book?.id}
+                />
             </div>
-
-            
         </div>
     );
 };
