@@ -21,7 +21,11 @@ public class ExtractJWT {
 
             if (keyValue[0].equals("\"" + key + "\"")) {
 
-                keyValue[1] = keyValue[1].substring(0, keyValue[1].length() - 1);
+                int remove = 1;
+                if (keyValue[1].endsWith("}")) {
+                    remove = 2;
+                }
+                keyValue[1] = keyValue[1].substring(0, keyValue[1].length() - remove);
                 keyValue[1] = keyValue[1].substring(1);
 
                 keyValue[0] = keyValue[0].substring(0, keyValue[0].length() - 1);
