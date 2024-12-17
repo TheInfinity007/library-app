@@ -1,6 +1,7 @@
 import { useOktaAuth } from '@okta/okta-react';
 import React, { useState } from 'react';
 import { SpinnerLoading } from '../../Utils/SpinnerLoading';
+import MessageModel from '../../../models/MessageModel';
 
 export const PostNewMessage = () => {
     const { authState } = useOktaAuth();
@@ -10,36 +11,55 @@ export const PostNewMessage = () => {
     const [displayWarning, setDisplayWarning] = useState(false);
     const [displaySuccess, setDisplaySuccess] = useState(false);
 
-    const [httpError, setHttpError] = useState(null);
-    const [isLoadingHistory, setIsLoadingHistory] = useState(false);
+    const submitNewQuestion = async () => {
+        if (authState?.isAuthenticated && title && question) {
+            const baseUrl: string = `http://localhost:8080/api/messages`;
 
-    // Handle Loading
-    if (isLoadingHistory) {
-        return <SpinnerLoading />;
-    }
+            const url: string = `${baseUrl}/secure`;
 
-    // Hanlde Http Error
-    if (httpError) {
-        return (
-            <div className="container m-5">
-                <p>{httpError}</p>
-            </div>
-        );
-    }
+            const messageRequestModel: MessageModel = new MessageModel(
+                title,
+                question
+            );
+
+            const token = authState?.accessToken?.accessToken;
+            const requestOptions = {
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(messageRequestModel),
+            };
+            const response: any = await fetch(url, requestOptions);
+
+            if (!response.ok) {
+                throw new Error('Something went wrong!');
+            }
+
+            setTitle('');
+            setQuestion('');
+            setDisplayWarning(false);
+            setDisplaySuccess(true);
+        } else {
+            setDisplayWarning(true);
+            setDisplaySuccess(false);
+        }
+    };
 
     return (
         <div className="card mt-3">
-            {displaySuccess && (
-                <div className="alert alert-displaySuccess" role="alert">
-                    Question added successfully!
-                </div>
-            )}
             <div className="card-header">Ask question to Love 2 Read Admin</div>
             <div className="card-body">
-                <form action="" method="POST">
+                <form method="POST">
                     {displayWarning && (
                         <div className="alert alert-danger" role="alert">
                             All fields must be filled out
+                        </div>
+                    )}
+                    {displaySuccess && (
+                        <div className="alert alert-success" role="alert">
+                            Question added successfully!
                         </div>
                     )}
 
@@ -67,7 +87,13 @@ export const PostNewMessage = () => {
                     </div>
 
                     <div>
-                        <button className="btn btn-primary mt-3">Submit Question</button>
+                        <button
+                            type="button"
+                            className="btn btn-primary mt-3"
+                            onClick={() => submitNewQuestion()}
+                        >
+                            Submit Question
+                        </button>
                     </div>
                 </form>
             </div>
