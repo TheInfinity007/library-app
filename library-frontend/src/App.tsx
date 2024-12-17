@@ -14,6 +14,7 @@ import LoginWidget from './Auth/LoginWidget';
 import { ReviewListPage } from './layouts/BookCheckoutPage/ReviewListPage/ReviewListPage';
 import { ShelfPage } from './layouts/ShelfPage/ShelfPage';
 import { RequiredAuth } from './Auth/RequiredAuth';
+import { MessagesPage } from './layouts/MessagesPage/MessagesPage';
 
 const oktaAuth = new OktaAuth(oktaConfig);
 
@@ -67,6 +68,9 @@ export const App = () => {
                         />
                         <Route path="/shelf" element={<RequiredAuth />}>
                             <Route path="" element={<ShelfPage />} />
+                        </Route>
+                        <Route path="/messages" element={<RequiredAuth />}>
+                            <Route path="" element={<MessagesPage />} />
                         </Route>
                     </Routes>
                 </div>
