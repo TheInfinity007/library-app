@@ -1,5 +1,6 @@
 import React from 'react';
 import { Loans } from './components/Loans';
+import { HistoryPage } from './components/HistoryPage';
 
 export const ShelfPage = () => {
     return (
@@ -49,7 +50,7 @@ export const ShelfPage = () => {
                         role="tabpanel"
                         aria-labelledby="nav-history-tab"
                     >
-                        <p>Checkout History</p>
+                        <HistoryPage />
                     </div>
                 </div>
             </div>
