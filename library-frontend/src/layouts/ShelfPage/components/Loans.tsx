@@ -100,9 +100,9 @@ export const Loans = () => {
                                         <div className="card-body">
                                             <div className="mt-3">
                                                 <h4>Loan Options</h4>
-                                                {loan.daysLeft>0 && <p className="text-secondaary">Due in {loan.daysLeft} days.</p> }
+                                                {loan.daysLeft > 0 && <p className="text-secondaary">Due in {loan.daysLeft} days.</p> }
                                                 {loan.daysLeft === 0 && <p className="text-success">Due Today.</p> }
-                                                {loan.daysLeft <= 0 && <p className="text-danger">Overdue by {Math.abs(loan.daysLeft)} days.</p> }
+                                                {loan.daysLeft < 0 && <p className="text-danger">Overdue by {Math.abs(loan.daysLeft)} days.</p> }
                                                 <div className="list-group mt-3">
                                                     <button className="list-group-item list-group-action-item" aria-current="true" data-bs-toggle="modal" data-bs-target={`#modal${loan.book.id}`}>
                                                         Manage Loan
@@ -160,9 +160,9 @@ export const Loans = () => {
                                     <div className="card-body container">
                                         <div className="mt-3">
                                             <h4>Loan Options</h4>
-                                            {loan.daysLeft>0 && <p className="text-secondaary">Due in {loan.daysLeft} days.</p> }
+                                            {loan.daysLeft > 0 && <p className="text-secondaary">Due in {loan.daysLeft} days.</p> }
                                             {loan.daysLeft === 0 && <p className="text-success">Due Today.</p> }
-                                            {loan.daysLeft <= 0 && <p className="text-danger">Overdue by {Math.abs(loan.daysLeft)} days.</p> }
+                                            {loan.daysLeft < 0 && <p className="text-danger">Overdue by {Math.abs(loan.daysLeft)} days.</p> }
                                             <div className="list-group mt-3">
                                                 <button className="list-group-item list-group-action-item" aria-current="true" data-bs-toggle="modal" data-bs-target={`#mobilemodal${loan.book.id}`}>
                                                     Manage Loan
