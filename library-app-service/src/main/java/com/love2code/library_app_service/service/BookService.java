@@ -122,7 +122,7 @@ public class BookService {
 
     }
 
-    public void renewLoan(String userEmail, Long bookId) throws Exception {
+    public void renewBook(String userEmail, Long bookId) throws Exception {
         Optional<Book> bookOpt = bookRepository.findById(bookId);
 
         Checkout checkout = checkoutRepository.findByUserEmailAndBookId(userEmail, bookId);
