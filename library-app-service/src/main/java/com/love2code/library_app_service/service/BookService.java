@@ -2,8 +2,10 @@ package com.love2code.library_app_service.service;
 
 import com.love2code.library_app_service.dao.BookRepository;
 import com.love2code.library_app_service.dao.CheckoutRepository;
+import com.love2code.library_app_service.dao.HistoryRepository;
 import com.love2code.library_app_service.entity.Book;
 import com.love2code.library_app_service.entity.Checkout;
+import com.love2code.library_app_service.entity.History;
 import com.love2code.library_app_service.responsemodels.ShelfCurrentLoansResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,11 +23,13 @@ import java.util.concurrent.TimeUnit;
 public class BookService {
     private final BookRepository bookRepository;
     private final CheckoutRepository checkoutRepository;
+    private final HistoryRepository historyRepository;
 
     // Constructor dependency injection
-    public BookService(BookRepository bookRepository, CheckoutRepository checkoutRepository) {
+    public BookService(BookRepository bookRepository, CheckoutRepository checkoutRepository, HistoryRepository historyRepository) {
         this.bookRepository = bookRepository;
         this.checkoutRepository = checkoutRepository;
+        this.historyRepository = historyRepository;
     }
 
     public Book checkoutBook(String userEmail, Long bookId) throws Exception {
@@ -118,8 +122,14 @@ public class BookService {
         book.setCopiesAvailable(book.getCopiesAvailable() + 1);
 
         bookRepository.save(book);
+
+        // Remove checkout
         checkoutRepository.deleteById(checkout.getId());
 
+        // save history
+        History history = new History(userEmail, checkout.getCheckoutDate(), LocalDate.now().toString(),
+                book.getTitle(), book.getAuthor(), book.getDescription(), book.getImg());
+        historyRepository.save(history);
     }
 
     public void renewBook(String userEmail, Long bookId) throws Exception {
