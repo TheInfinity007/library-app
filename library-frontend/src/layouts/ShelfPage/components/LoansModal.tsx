@@ -2,9 +2,9 @@ import React from 'react'
 import ShelfCurrentLoans from '../../../models/ShelfCurrentLoans';
 
 export const LoansModal:React.FC<{
-    shelfCurrentLoans: ShelfCurrentLoans, mobile: boolean;
+    shelfCurrentLoans: ShelfCurrentLoans, mobile: boolean, returnBook: any
 }> = (props) => {
-    const { shelfCurrentLoans, mobile } = props;
+    const { shelfCurrentLoans, mobile, returnBook } = props;
 
   return (
     <div className='modal fade' id={mobile?`mobilemodal${shelfCurrentLoans.book.id}`: `modal${shelfCurrentLoans.book.id}`}
@@ -40,7 +40,7 @@ export const LoansModal:React.FC<{
                             {shelfCurrentLoans.daysLeft < 0 && <p className="text-danger">Overdue by {Math.abs(shelfCurrentLoans.daysLeft)} days.</p> }
                             
                             <div className="list-group mt-3">
-                                <button data-bs-dismiss="modal" className="list-group-item list-group-item-action" aria-current="true">
+                                <button data-bs-dismiss="modal" onClick={() => returnBook(shelfCurrentLoans.book.id)} className="list-group-item list-group-item-action" aria-current="true">
                                     Return Book
                                 </button>
                                 <button data-bs-dismiss="modal" 

@@ -15,7 +15,9 @@ export const Loans = () => {
         ShelfCurrentLoans[]
     >([]);
     const [isLoadingUserLoans, setIsLoadingUserLoans] = useState(true);
+    const [checkout, setCheckout] = useState(false);
 
+    // Fetch current loans use effect
     useEffect(() => {
         const fetchUserCurrentLoans = async () => {
             if (!authState?.isAuthenticated) {
@@ -52,7 +54,7 @@ export const Loans = () => {
             setIsLoadingUserLoans(false);
         });
         window.scrollTo(0, 0);
-    }, [authState]);
+    }, [authState, checkout]);
 
     // Handle Loading
     if (isLoadingUserLoans) {
@@ -66,6 +68,28 @@ export const Loans = () => {
                 <p>{httpError}</p>
             </div>
         );
+    }
+
+    const returnBook = async (bookId: number) => {
+        const baseUrl: string = `http://localhost:8080/api/books`;
+
+        const url: string = `${baseUrl}/secure/return?bookId=${bookId}`;
+
+        const token = authState?.accessToken?.accessToken;
+        const requestOptions = {
+            method: 'PUT',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        };
+        const response: any = await fetch(url, requestOptions);
+
+        if (!response.ok) {
+            throw new Error('Something went wrong!');
+        }
+
+        setCheckout(!checkout);
     }
 
     return (
@@ -117,7 +141,7 @@ export const Loans = () => {
                                     </div>
                                 </div>
                                 <hr />
-                                <LoansModal shelfCurrentLoans={loan} mobile={false} />
+                                <LoansModal shelfCurrentLoans={loan} mobile={false} returnBook={returnBook} />
                             </div>
                         ))}
                     </>
@@ -177,7 +201,7 @@ export const Loans = () => {
                                 </div>
                                 
                                 <hr />
-                                <LoansModal shelfCurrentLoans={loan} mobile={true} />
+                                <LoansModal shelfCurrentLoans={loan} mobile={true} returnBook={returnBook} />
                             </div>
                         ))}
                     </>
