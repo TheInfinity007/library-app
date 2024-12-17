@@ -34,6 +34,9 @@ public class History {
     @Column(name = "img")
     private String img;
 
+    public History() {
+    }
+
     public History(String userEmail, String checkoutDate, String returnedDate, String title, String author, String description, String img) {
         this.userEmail = userEmail;
         this.checkoutDate = checkoutDate;
