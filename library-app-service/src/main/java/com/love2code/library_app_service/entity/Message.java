@@ -29,4 +29,12 @@ public class Message {
 
     @Column(name = "closed")
     private Boolean closed;
+
+    public Message() {
+    }
+
+    public Message(String title, String question) {
+        this.title = title;
+        this.question = question;
+    }
 }
