@@ -4,6 +4,7 @@ import { SpinnerLoading } from '../../Utils/SpinnerLoading';
 import MessageModel from '../../../models/MessageModel';
 import { Pagination } from '../../Utils/Pagination';
 import { AdminMessage } from './AdminMessage';
+import AdminMessageRequest from '../../../models/AdminMessageRequest';
 
 export const AdminMessages = () => {
     const { authState } = useOktaAuth();
@@ -18,6 +19,9 @@ export const AdminMessages = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [messagesPerPage] = useState(5);
     const [totalPages, setTotalPages] = useState(0);
+
+    // Recall useEffect
+    const [responseSent, setResponseSent] = useState(false);
 
     useEffect(() => {
         const fetchUserMessages = async () => {
@@ -60,7 +64,7 @@ export const AdminMessages = () => {
             setHttpError(err.message);
         });
         window.scrollTo(0, 0);
-    }, [authState, currentPage, messagesPerPage]);
+    }, [authState, currentPage, messagesPerPage, responseSent]);
 
     // Handle Loading
     if (isLoadingMessages) {
@@ -76,6 +80,36 @@ export const AdminMessages = () => {
         );
     }
 
+    const submitResponseToQuestion = async (
+        messageId: number,
+        response: string
+    ) => {
+        const url: string = `http://localhost:8080/api/messages/secure`;
+
+        if (authState?.isAuthenticated && response && messageId) {
+            const payload: AdminMessageRequest = new AdminMessageRequest(
+                messageId,
+                response
+            );
+
+            const requestOptions = {
+                method: 'PUT',
+                headers: {
+                    Authorization: `Bearer ${authState?.accessToken?.accessToken}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            };
+            const responseMessages = await fetch(url, requestOptions);
+
+            if (!responseMessages.ok) {
+                throw new Error('Something went wrong!');
+            }
+
+            setResponseSent(!responseSent);
+        }
+    };
+
     const paginate = (pageNumber: number) => {
         setCurrentPage(pageNumber);
     };
@@ -86,7 +120,10 @@ export const AdminMessages = () => {
                 <>
                     <h5>Pending Q/A:</h5>
                     {messages.map((message) => (
-                        <AdminMessage message={message} key={message.id} />
+                        <AdminMessage
+                            message={message}
+                            submitResponseToQuestion={submitResponseToQuestion}
+                        />
                     ))}
                 </>
             ) : (
