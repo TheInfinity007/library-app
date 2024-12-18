@@ -33,8 +33,9 @@ public class Message {
     public Message() {
     }
 
-    public Message(String title, String question) {
+    public Message(String title, String question, Boolean closed) {
         this.title = title;
         this.question = question;
+        this.closed = closed;
     }
 }
