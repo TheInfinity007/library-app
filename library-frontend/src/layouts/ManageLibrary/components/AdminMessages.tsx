@@ -1,10 +1,11 @@
 import { useOktaAuth } from '@okta/okta-react';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { SpinnerLoading } from '../../Utils/SpinnerLoading';
 import MessageModel from '../../../models/MessageModel';
+import { Pagination } from '../../Utils/Pagination';
+import { AdminMessage } from './AdminMessage';
 
 export const AdminMessages = () => {
-
     const { authState } = useOktaAuth();
 
     const [httpError, setHttpError] = useState(null);
@@ -27,8 +28,8 @@ export const AdminMessages = () => {
 
             const baseUrl: string = `http://localhost:8080/api/messages`;
 
-            const userEmail = authState.accessToken?.claims.sub;
-            const url: string = `${baseUrl}/search/findByClosed?closed=${false}&page=${
+            const closed = false;
+            const url: string = `${baseUrl}/search/findByClosed?closed=${closed}&page=${
                 currentPage - 1
             }&size=${messagesPerPage}`;
 
@@ -79,8 +80,25 @@ export const AdminMessages = () => {
         setCurrentPage(pageNumber);
     };
 
-
-  return (
-    <div>AdminMessages</div>
-  )
-}
+    return (
+        <div className="mt-3">
+            {messages.length > 0 ? (
+                <>
+                    <h5>Pending Q/A:</h5>
+                    {messages.map((message) => (
+                        <AdminMessage message={message} key={message.id} />
+                    ))}
+                </>
+            ) : (
+                <>No pending Q/A</>
+            )}
+            {totalPages > 1 && (
+                <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    paginate={paginate}
+                />
+            )}
+        </div>
+    );
+};
