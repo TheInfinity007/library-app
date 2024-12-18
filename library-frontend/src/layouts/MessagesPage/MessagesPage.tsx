@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { PostNewMessage } from './components/PostNewMessage';
+import { Messages } from './components/Messages';
 
 export const MessagesPage = () => {
     const [messagesClick, setMessagesClick] = useState(false);
@@ -53,9 +54,9 @@ export const MessagesPage = () => {
                         role="tabpanel"
                         aria-labelledby="nav-message-tab"
                     >
-                        Messages
-                        {/* Load and Show history only when clicked */}
-                        {/* {historyClick ? <HistoryPage /> : <></>} */}
+                        
+                        {/* Load and Show messages only when clicked */}
+                        {messagesClick ? <Messages /> : <></>}
                     </div>
                 </div>
             </div>
