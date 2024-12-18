@@ -6,7 +6,22 @@ export const ManageLibrary = () => {
 
     const [changeQuantityOfBooksClick, setChangeQuantityOfBooksClick] =
         useState(false);
-    const [messageClick, setMessageClick] = useState(false);
+    const [messagesClick, setMessagesClick] = useState(false);
+
+    const handleAddBook = () => {
+        setChangeQuantityOfBooksClick(false);
+        setMessagesClick(false);
+    };
+
+    const handleChangeQuantityOfBooks = () => {
+        setChangeQuantityOfBooksClick(true);
+        setMessagesClick(false);
+    };
+
+    const handleMessages = () => {
+        setChangeQuantityOfBooksClick(false);
+        setMessagesClick(true);
+    };
 
     return (
         <div className="container">
@@ -15,7 +30,7 @@ export const ManageLibrary = () => {
                 <nav>
                     <div className="nav nav-tabs" id="nav-tab" role="tablist">
                         <button
-                            onClick={() => setMessageClick(false)}
+                            onClick={() => handleAddBook()}
                             className="nav-link active"
                             id="nav-add-book-tab"
                             data-bs-toggle="tab"
@@ -28,7 +43,7 @@ export const ManageLibrary = () => {
                             Add new book
                         </button>
                         <button
-                            onClick={() => setMessageClick(false)}
+                            onClick={() => handleChangeQuantityOfBooks()}
                             className="nav-link"
                             id="nav-quantity-tab"
                             data-bs-toggle="tab"
@@ -41,7 +56,7 @@ export const ManageLibrary = () => {
                             Change Quantity
                         </button>
                         <button
-                            onClick={() => setMessageClick(true)}
+                            onClick={() => handleMessages()}
                             className="nav-link"
                             id="nav-messages-tab"
                             data-bs-toggle="tab"
@@ -72,8 +87,12 @@ export const ManageLibrary = () => {
                         aria-labelledby="nav-quantity-tab"
                     >
                         Change Quantity
-                        {/* Load and Show messages only when clicked */}
-                        {/* {messagesClick ? <Messages /> : <></>} */}
+                        {/* Load and Show Quantity only when clicked */}
+                        {changeQuantityOfBooksClick ? (
+                            <>Change Quantity</>
+                        ) : (
+                            <></>
+                        )}
                     </div>
                     <div
                         className="tab-pane fade show"
@@ -83,7 +102,7 @@ export const ManageLibrary = () => {
                     >
                         Admin Messages
                         {/* Load and Show messages only when clicked */}
-                        {/* {messagesClick ? <Messages /> : <></>} */}
+                        {messagesClick ? <>Messages Clicked</> : <></>}
                     </div>
                 </div>
             </div>
