@@ -1,5 +1,9 @@
 import { useOktaAuth } from '@okta/okta-react';
 import React, { useState } from 'react';
+import { Navigate } from 'react-router-dom';
+import Constants from '../../constants';
+
+const { USER_TYPE } = Constants;
 
 export const ManageLibrary = () => {
     const { authState } = useOktaAuth();
@@ -22,6 +26,10 @@ export const ManageLibrary = () => {
         setChangeQuantityOfBooksClick(false);
         setMessagesClick(true);
     };
+
+    if (authState?.accessToken?.claims.userType !== USER_TYPE.ADMIN) {
+        return <Navigate to="/home" />;
+    }
 
     return (
         <div className="container">

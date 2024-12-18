@@ -1,6 +1,9 @@
 import { useOktaAuth } from '@okta/okta-react';
 import { Link, NavLink } from 'react-router-dom';
 import { SpinnerLoading } from '../Utils/SpinnerLoading';
+import Constants from '../../constants';
+
+const { USER_TYPE } = Constants;
 
 export const Navbar = () => {
     const { oktaAuth, authState } = useOktaAuth();
@@ -59,17 +62,17 @@ export const Navbar = () => {
                                         Messages
                                     </NavLink>
                                 </li>
-
+                            </>
+                        )}
+                        {authState.isAuthenticated &&
+                            authState.accessToken?.claims.userType ===
+                            USER_TYPE.ADMIN && (
                                 <li className="nav-item">
-                                    <NavLink
-                                        to="/admin"
-                                        className="nav-link"
-                                    >
+                                    <NavLink to="/admin" className="nav-link">
                                         Admin
                                     </NavLink>
                                 </li>
-                            </>
-                        )}
+                            )}
                     </ul>
                     <ul className="navbar-nav ms-auto">
                         {!authState.isAuthenticated ? (
