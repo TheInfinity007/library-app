@@ -36,6 +36,7 @@ public class MessageService {
         Message message = messageOpt.get();
 
         message.setResponse(adminQuestionRequest.getResponse());
+        message.setAdminEmail(userEmail);
         message.setClosed(true);
         messageRepository.save(message);
     }
