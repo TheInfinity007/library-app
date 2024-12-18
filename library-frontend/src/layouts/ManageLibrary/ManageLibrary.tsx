@@ -2,6 +2,7 @@ import { useOktaAuth } from '@okta/okta-react';
 import React, { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import Constants from '../../constants';
+import { AdminMessages } from './components/AdminMessages';
 
 const { USER_TYPE } = Constants;
 
@@ -108,9 +109,8 @@ export const ManageLibrary = () => {
                         role="tabpanel"
                         aria-labelledby="nav-messages-tab"
                     >
-                        Admin Messages
                         {/* Load and Show messages only when clicked */}
-                        {messagesClick ? <>Messages Clicked</> : <></>}
+                        {messagesClick ? <AdminMessages/> : <></>}
                     </div>
                 </div>
             </div>
