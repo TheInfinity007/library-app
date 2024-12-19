@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import Constants from '../../constants';
 import { AdminMessages } from './components/AdminMessages';
+import { AddNewBook } from '../MessagesPage/components/AddNewBook';
 
 const { USER_TYPE } = Constants;
 
@@ -86,8 +87,7 @@ export const ManageLibrary = () => {
                         role="tabpanel"
                         aria-labelledby="nav-add-book-tab"
                     >
-                        Add book
-                        {/* <PostNewMessage /> */}
+                        <AddNewBook />
                     </div>
                     <div
                         className="tab-pane fade show"
@@ -110,7 +110,7 @@ export const ManageLibrary = () => {
                         aria-labelledby="nav-messages-tab"
                     >
                         {/* Load and Show messages only when clicked */}
-                        {messagesClick ? <AdminMessages/> : <></>}
+                        {messagesClick ? <AdminMessages /> : <></>}
                     </div>
                 </div>
             </div>

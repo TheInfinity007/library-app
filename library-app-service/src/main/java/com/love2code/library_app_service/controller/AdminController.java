@@ -5,15 +5,14 @@ import com.love2code.library_app_service.requestmodels.AddBookRequest;
 import com.love2code.library_app_service.service.AdminService;
 import com.love2code.library_app_service.utils.ExtractJWT;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.mediatype.alps.Ext;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin("http://localhost:3000")
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/api/admin")
 public class AdminController {
 
-    private AdminService adminService;
+    private final AdminService adminService;
 
     @Autowired
     AdminController(AdminService adminService) {
