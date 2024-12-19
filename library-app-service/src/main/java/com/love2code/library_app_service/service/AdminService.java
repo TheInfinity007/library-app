@@ -1,6 +1,8 @@
 package com.love2code.library_app_service.service;
 
 import com.love2code.library_app_service.dao.BookRepository;
+import com.love2code.library_app_service.dao.CheckoutRepository;
+import com.love2code.library_app_service.dao.ReviewRepository;
 import com.love2code.library_app_service.entity.Book;
 import com.love2code.library_app_service.requestmodels.AddBookRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +16,14 @@ import java.util.Optional;
 public class AdminService {
 
     private final BookRepository bookRepository;
+    private final ReviewRepository reviewRepository;
+    private final CheckoutRepository checkoutRepository;
 
     @Autowired
-    AdminService(BookRepository bookRepository) {
+    AdminService(BookRepository bookRepository, ReviewRepository reviewRepository, CheckoutRepository checkoutRepository) {
         this.bookRepository = bookRepository;
+        this.reviewRepository = reviewRepository;
+        this.checkoutRepository = checkoutRepository;
     }
 
     public Book addBook(AddBookRequest addBookRequest) {
@@ -34,6 +40,18 @@ public class AdminService {
         bookRepository.save(book);
 
         return book;
+    }
+
+    public void deleteBook(Long bookId) throws Exception {
+        Optional<Book> bookOpt = bookRepository.findById(bookId);
+
+        if (!bookOpt.isPresent()) {
+            throw new Exception("Book not found");
+        }
+
+        checkoutRepository.deleteAllByBookId(bookId);
+        reviewRepository.deleteAllByBookId(bookId);
+        bookRepository.deleteById(bookId);
     }
 
     public Book increaseBookQuantity(Long bookId) throws Exception {
@@ -73,4 +91,5 @@ public class AdminService {
 
         return book;
     }
+
 }

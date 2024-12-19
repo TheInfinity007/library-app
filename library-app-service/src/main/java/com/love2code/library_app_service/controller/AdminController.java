@@ -32,6 +32,18 @@ public class AdminController {
 
     }
 
+    @DeleteMapping("/secure/delete/book")
+    public void deleteBook(@RequestHeader(name = "Authorization") String token,
+                           @RequestParam Long bookId) throws Exception {
+        String userType = ExtractJWT.payloadJWTExtraction(token, "userType");
+
+        if (userType == null || !userType.equals("ADMIN")) {
+            throw new Exception("You are not authorized to decrease book. Please contact admin.");
+        }
+
+        adminService.deleteBook(bookId);
+    }
+
     @PutMapping("/secure/increase/book/quantity")
     public Book increaseBookQuantity(@RequestHeader(name = "Authorization") String token,
                                      @RequestParam Long bookId) throws Exception {
