@@ -24,7 +24,7 @@ public class AdminController {
                         @RequestBody AddBookRequest addBookRequest) throws Exception {
         String userType = ExtractJWT.payloadJWTExtraction(token, "userType");
 
-        if (!userType.equals("ADMIN")) {
+        if (userType == null || !userType.equals("ADMIN")) {
             throw new Exception("You are not authorized to add book. Please contact admin.");
         }
 
@@ -37,7 +37,7 @@ public class AdminController {
                                      @RequestParam Long bookId) throws Exception {
         String userType = ExtractJWT.payloadJWTExtraction(token, "userType");
 
-        if (!userType.equals("ADMIN")) {
+        if (userType == null || !userType.equals("ADMIN")) {
             throw new Exception("You are not authorized to add book. Please contact admin.");
         }
 
@@ -49,7 +49,7 @@ public class AdminController {
                                      @RequestParam Long bookId) throws Exception {
         String userType = ExtractJWT.payloadJWTExtraction(token, "userType");
 
-        if (!userType.equals("ADMIN")) {
+        if (userType == null || !userType.equals("ADMIN")) {
             throw new Exception("You are not authorized to add book. Please contact admin.");
         }
 
