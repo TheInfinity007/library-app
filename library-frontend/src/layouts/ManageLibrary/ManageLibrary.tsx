@@ -4,6 +4,7 @@ import { Navigate } from 'react-router-dom';
 import Constants from '../../constants';
 import { AdminMessages } from './components/AdminMessages';
 import { AddNewBook } from './components/AddNewBook';
+import { ChangeQuantityOfBooks } from './components/ChangeQuantityOfBooks';
 
 const { USER_TYPE } = Constants;
 
@@ -95,10 +96,11 @@ export const ManageLibrary = () => {
                         role="tabpanel"
                         aria-labelledby="nav-quantity-tab"
                     >
-                        Change Quantity
                         {/* Load and Show Quantity only when clicked */}
                         {changeQuantityOfBooksClick ? (
-                            <>Change Quantity</>
+                            <>
+                                <ChangeQuantityOfBooks />
+                            </>
                         ) : (
                             <></>
                         )}
