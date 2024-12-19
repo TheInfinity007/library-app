@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import BookModel from '../../../models/BookModel';
+import { useOktaAuth } from '@okta/okta-react';
+import Constants from '../../../constants';
+
+const { USER_TYPE } = Constants;
 
 export const ChangeQuantityOfBook: React.FC<{ book: BookModel }> = (props) => {
     const { book } = props;
+
+    const { authState } = useOktaAuth();
 
     const [quantity, setQuantity] = useState(0);
     const [remaining, setRemaining] = useState(0);
@@ -14,6 +20,59 @@ export const ChangeQuantityOfBook: React.FC<{ book: BookModel }> = (props) => {
         };
         fetchBookInState();
     }, []);
+
+    const increaseQuantity = async () => {
+        if (
+            !authState?.isAuthenticated &&
+            authState?.accessToken?.claims.userType !== USER_TYPE.ADMIN
+        ) {
+            return;
+        }
+
+        const baseUrl: string = 'http://localhost:8080/api/admin';
+
+        let url: string = `${baseUrl}/secure/increase/book/quantity?bookId=${book.id}`;
+
+        const token = authState?.accessToken?.accessToken;
+        const requestOptions = {
+            method: 'PUT',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        };
+        const response: any = await fetch(url, requestOptions);
+
+        if (!response.ok) {
+            throw new Error('Something went wrong!');
+        }
+
+        setQuantity(quantity + 1);
+        setRemaining(remaining + 1);
+    };
+
+    const decreaseQuantity = async () => {
+        const baseUrl: string = 'http://localhost:8080/api/admin';
+
+        let url: string = `${baseUrl}/secure/decrease/book/quantity?bookId=${book.id}`;
+
+        const token = authState?.accessToken?.accessToken;
+        const requestOptions = {
+            method: 'PUT',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        };
+        const response: any = await fetch(url, requestOptions);
+
+        if (!response.ok) {
+            throw new Error('Something went wrong!');
+        }
+
+        setQuantity(quantity - 1);
+        setRemaining(remaining - 1);
+    };
 
     return (
         <div className="card mt-3 shadow p-3 mb-3 bg-body rounded">
@@ -80,10 +139,16 @@ export const ChangeQuantityOfBook: React.FC<{ book: BookModel }> = (props) => {
                         </button>
                     </div>
                 </div>
-                <button className="m-1 btn btn-md main-color text-white">
+                <button
+                    className="m-1 btn btn-md main-color text-white"
+                    onClick={increaseQuantity}
+                >
                     Add Quantity
                 </button>
-                <button className="m-1 btn btn-md btn-warning">
+                <button
+                    className="m-1 btn btn-md btn-warning"
+                    onClick={decreaseQuantity}
+                >
                     Decrease Quantity
                 </button>
             </div>
