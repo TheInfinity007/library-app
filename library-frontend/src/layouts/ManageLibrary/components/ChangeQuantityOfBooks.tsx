@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import BookModel from '../../../models/BookModel';
 import { SpinnerLoading } from '../../Utils/SpinnerLoading';
 import { Pagination } from '../../Utils/Pagination';
+import { ChangeQuantityOfBook } from './ChangeQuantityOfBook';
 
 export const ChangeQuantityOfBooks = () => {
     const [books, setBooks] = useState<BookModel[]>([]);
@@ -82,7 +83,7 @@ export const ChangeQuantityOfBooks = () => {
                         {totalAmountOfBooks} items:
                     </p>
                     {books.map((book) => (
-                        <p>Display book</p>
+                        <ChangeQuantityOfBook book={book} />
                     ))}
                 </>
             ) : (
