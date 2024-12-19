@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import Constants from '../../constants';
 import { AdminMessages } from './components/AdminMessages';
-import { AddNewBook } from '../MessagesPage/components/AddNewBook';
+import { AddNewBook } from './components/AddNewBook';
 
 const { USER_TYPE } = Constants;
 
