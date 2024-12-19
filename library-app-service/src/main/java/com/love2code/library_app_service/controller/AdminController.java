@@ -38,7 +38,7 @@ public class AdminController {
         String userType = ExtractJWT.payloadJWTExtraction(token, "userType");
 
         if (userType == null || !userType.equals("ADMIN")) {
-            throw new Exception("You are not authorized to add book. Please contact admin.");
+            throw new Exception("You are not authorized to increase book. Please contact admin.");
         }
 
         return adminService.increaseBookQuantity(bookId);
@@ -50,7 +50,7 @@ public class AdminController {
         String userType = ExtractJWT.payloadJWTExtraction(token, "userType");
 
         if (userType == null || !userType.equals("ADMIN")) {
-            throw new Exception("You are not authorized to add book. Please contact admin.");
+            throw new Exception("You are not authorized to decrease book. Please contact admin.");
         }
 
         return adminService.decreaseBookQuantity(bookId);
