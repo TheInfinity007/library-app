@@ -22,7 +22,6 @@ public class AdminController {
     @PostMapping("/secure/add/book")
     public Book addBook(@RequestHeader(name = "Authorization") String token,
                         @RequestBody AddBookRequest addBookRequest) throws Exception {
-        String userEmail = ExtractJWT.payloadJWTExtraction(token, "sub");
         String userType = ExtractJWT.payloadJWTExtraction(token, "userType");
 
         if (!userType.equals("ADMIN")) {
@@ -31,5 +30,17 @@ public class AdminController {
 
         return adminService.addBook(addBookRequest);
 
+    }
+
+    @PutMapping("/secure/increase/book/quantity")
+    public Book increaseBookQuantity(@RequestHeader(name = "Authorization") String token,
+                                     @RequestParam Long bookId) throws Exception {
+        String userType = ExtractJWT.payloadJWTExtraction(token, "userType");
+
+        if (!userType.equals("ADMIN")) {
+            throw new Exception("You are not authorized to add book. Please contact admin.");
+        }
+
+        return adminService.increaseBookQuantity(bookId);
     }
 }

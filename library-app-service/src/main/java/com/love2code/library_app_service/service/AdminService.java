@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @Transactional
 public class AdminService {
@@ -30,6 +32,21 @@ public class AdminService {
         book.setCopiesAvailable(addBookRequest.getCopies());
 
         bookRepository.save(book);
+
+        return book;
+    }
+
+    public Book increaseBookQuantity(Long bookId) throws Exception {
+        Optional<Book> bookOpt = bookRepository.findById(bookId);
+
+        if (!bookOpt.isPresent()) {
+            throw new Exception("Book not  found");
+        }
+
+        Book book = bookOpt.get();
+
+        book.setCopiesAvailable(book.getCopiesAvailable() + 1);
+        book.setCopies(book.getCopies() + 1);
 
         return book;
     }
