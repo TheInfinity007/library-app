@@ -48,6 +48,29 @@ public class AdminService {
         book.setCopiesAvailable(book.getCopiesAvailable() + 1);
         book.setCopies(book.getCopies() + 1);
 
+        bookRepository.save(book);
+
+        return book;
+    }
+
+    public Book decreaseBookQuantity(Long bookId) throws Exception {
+        Optional<Book> bookOpt = bookRepository.findById(bookId);
+
+        if (!bookOpt.isPresent()) {
+            throw new Exception("Book not found");
+        }
+
+        Book book = bookOpt.get();
+
+        if (book.getCopiesAvailable() <= 0 || book.getCopies() <= 0) {
+            throw new Exception("Quantity Locked");
+        }
+
+        book.setCopiesAvailable(book.getCopiesAvailable() - 1);
+        book.setCopies(book.getCopies() - 1);
+
+        bookRepository.save(book);
+
         return book;
     }
 }

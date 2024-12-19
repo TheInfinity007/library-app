@@ -43,4 +43,16 @@ public class AdminController {
 
         return adminService.increaseBookQuantity(bookId);
     }
+
+    @PutMapping("/secure/decrease/book/quantity")
+    public Book decreaseBookQuantity(@RequestHeader(name = "Authorization") String token,
+                                     @RequestParam Long bookId) throws Exception {
+        String userType = ExtractJWT.payloadJWTExtraction(token, "userType");
+
+        if (!userType.equals("ADMIN")) {
+            throw new Exception("You are not authorized to add book. Please contact admin.");
+        }
+
+        return adminService.decreaseBookQuantity(bookId);
+    }
 }
