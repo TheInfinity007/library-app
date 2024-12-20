@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import BookModel from '../../../models/BookModel';
 import { useOktaAuth } from '@okta/okta-react';
 import Constants from '../../../constants';
+import { BE_BASE_URL } from '../../../config';
 
 const { USER_TYPE } = Constants;
 
@@ -32,7 +33,7 @@ export const ChangeQuantityOfBook: React.FC<{
             return;
         }
 
-        const baseUrl: string = 'http://localhost:8080/api/admin';
+        const baseUrl: string = `${BE_BASE_URL}/api/admin`;
 
         let url: string = `${baseUrl}/secure/delete/book?bookId=${book.id}`;
 
@@ -61,7 +62,7 @@ export const ChangeQuantityOfBook: React.FC<{
             return;
         }
 
-        const baseUrl: string = 'http://localhost:8080/api/admin';
+        const baseUrl: string = `${BE_BASE_URL}/api/admin`;
 
         let url: string = `${baseUrl}/secure/increase/book/quantity?bookId=${book.id}`;
 
@@ -84,7 +85,7 @@ export const ChangeQuantityOfBook: React.FC<{
     };
 
     const decreaseQuantity = async () => {
-        const baseUrl: string = 'http://localhost:8080/api/admin';
+        const baseUrl: string = `${BE_BASE_URL}/api/admin`;
 
         let url: string = `${baseUrl}/secure/decrease/book/quantity?bookId=${book.id}`;
 

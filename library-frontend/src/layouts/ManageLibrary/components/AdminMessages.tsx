@@ -5,6 +5,7 @@ import MessageModel from '../../../models/MessageModel';
 import { Pagination } from '../../Utils/Pagination';
 import { AdminMessage } from './AdminMessage';
 import AdminMessageRequest from '../../../models/AdminMessageRequest';
+import { BE_BASE_URL } from '../../../config';
 
 export const AdminMessages = () => {
     const { authState } = useOktaAuth();
@@ -30,7 +31,7 @@ export const AdminMessages = () => {
                 return;
             }
 
-            const baseUrl: string = `http://localhost:8080/api/messages`;
+            const baseUrl: string = `${BE_BASE_URL}/api/messages`;
 
             const closed = false;
             const url: string = `${baseUrl}/search/findByClosed?closed=${closed}&page=${
@@ -84,7 +85,7 @@ export const AdminMessages = () => {
         messageId: number,
         response: string
     ) => {
-        const url: string = `http://localhost:8080/api/messages/secure`;
+        const url: string = `${BE_BASE_URL}/api/messages/secure`;
 
         if (authState?.isAuthenticated && response && messageId) {
             const payload: AdminMessageRequest = new AdminMessageRequest(

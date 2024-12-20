@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { SpinnerLoading } from '../../Utils/SpinnerLoading';
 import MessageModel from '../../../models/MessageModel';
 import { Pagination } from '../../Utils/Pagination';
+import { BE_BASE_URL } from '../../../config';
 
 export const Messages = () => {
     const { authState } = useOktaAuth();
@@ -25,7 +26,7 @@ export const Messages = () => {
                 return;
             }
 
-            const baseUrl: string = `http://localhost:8080/api/messages`;
+            const baseUrl: string = `${BE_BASE_URL}/api/messages`;
 
             const userEmail = authState.accessToken?.claims.sub;
             const url: string = `${baseUrl}/search/findByUserEmail?userEmail=${userEmail}&page=${
