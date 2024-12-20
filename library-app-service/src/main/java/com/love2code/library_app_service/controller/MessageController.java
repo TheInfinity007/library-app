@@ -7,7 +7,6 @@ import com.love2code.library_app_service.utils.ExtractJWT;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin("http://localhost:3000")
 @RestController
 @RequestMapping("/api/messages")
 public class MessageController {

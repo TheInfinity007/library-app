@@ -21,6 +21,10 @@ public class SecurityConfiguration {
         // Disable Cross Site Request Forgery
         http.csrf(AbstractHttpConfigurer::disable);
 
+        // Add CORS filters
+        http.cors(cors -> {
+        });
+
         // Protect endpoints at /api/<type>/secure/*
         http
                 .authorizeHttpRequests(configurer -> configurer
@@ -38,10 +42,6 @@ public class SecurityConfiguration {
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer -> OAuth2ResourceServerConfigurer
                         .jwt(Customizer.withDefaults())
                 );
-
-        // Add CORS filters
-        http.cors(httpSecurityCorsConfigurer -> {
-        });
 
         // Add content negotiation strategy
         http.setSharedObject(ContentNegotiationStrategy.class,
