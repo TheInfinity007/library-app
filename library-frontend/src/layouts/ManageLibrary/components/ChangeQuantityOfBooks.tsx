@@ -15,6 +15,8 @@ export const ChangeQuantityOfBooks = () => {
     const [totalPages, setTotalPages] = useState(0);
     const [totalAmountOfBooks, setTotalAmountOfBooks] = useState(0);
 
+    const [bookDelete, setBookDelete] = useState(false);
+
     // Search books useEffect
     useEffect(() => {
         const fetchBooks = async () => {
@@ -44,7 +46,7 @@ export const ChangeQuantityOfBooks = () => {
             setIsLoading(false);
             setHttpError(err.message);
         });
-    }, [currentPage, booksPerPage]);
+    }, [currentPage, booksPerPage, bookDelete]);
 
     const indexOfLastBook: number = currentPage * booksPerPage;
     const indexOfFirstBook: number = indexOfLastBook - booksPerPage;
@@ -55,6 +57,10 @@ export const ChangeQuantityOfBooks = () => {
 
     const paginate = (pageNumber: number) => {
         setCurrentPage(pageNumber);
+    };
+
+    const hasBookDeleted = async () => {
+        setBookDelete(!bookDelete);
     };
 
     // Handle Loading
@@ -83,7 +89,11 @@ export const ChangeQuantityOfBooks = () => {
                         {totalAmountOfBooks} items:
                     </p>
                     {books.map((book) => (
-                        <ChangeQuantityOfBook book={book} key={book.id}/>
+                        <ChangeQuantityOfBook
+                            book={book}
+                            key={book.id}
+                            hasBookDeleted={hasBookDeleted}
+                        />
                     ))}
                 </>
             ) : (

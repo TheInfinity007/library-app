@@ -5,8 +5,11 @@ import Constants from '../../../constants';
 
 const { USER_TYPE } = Constants;
 
-export const ChangeQuantityOfBook: React.FC<{ book: BookModel }> = (props) => {
-    const { book } = props;
+export const ChangeQuantityOfBook: React.FC<{
+    book: BookModel;
+    hasBookDeleted: any;
+}> = (props) => {
+    const { book, hasBookDeleted } = props;
 
     const { authState } = useOktaAuth();
 
@@ -20,6 +23,35 @@ export const ChangeQuantityOfBook: React.FC<{ book: BookModel }> = (props) => {
         };
         fetchBookInState();
     }, [book]);
+
+    const deleteBook = async () => {
+        if (
+            !authState?.isAuthenticated &&
+            authState?.accessToken?.claims.userType !== USER_TYPE.ADMIN
+        ) {
+            return;
+        }
+
+        const baseUrl: string = 'http://localhost:8080/api/admin';
+
+        let url: string = `${baseUrl}/secure/delete/book?bookId=${book.id}`;
+
+        const token = authState?.accessToken?.accessToken;
+        const requestOptions = {
+            method: 'DELETE',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        };
+        const response: any = await fetch(url, requestOptions);
+
+        if (!response.ok) {
+            throw new Error('Something went wrong!');
+        }
+
+        hasBookDeleted();
+    };
 
     const increaseQuantity = async () => {
         if (
@@ -134,7 +166,10 @@ export const ChangeQuantityOfBook: React.FC<{ book: BookModel }> = (props) => {
 
                 <div className="mt-3 col-md-1">
                     <div className="d-flex justify-content-start">
-                        <button className="m-1 btn btn-md btn-danger">
+                        <button
+                            onClick={deleteBook}
+                            className="m-1 btn btn-md btn-danger"
+                        >
                             Delete
                         </button>
                     </div>
