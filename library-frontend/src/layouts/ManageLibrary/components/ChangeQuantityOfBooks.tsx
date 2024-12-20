@@ -83,7 +83,7 @@ export const ChangeQuantityOfBooks = () => {
                         {totalAmountOfBooks} items:
                     </p>
                     {books.map((book) => (
-                        <ChangeQuantityOfBook book={book} />
+                        <ChangeQuantityOfBook book={book} key={book.id}/>
                     ))}
                 </>
             ) : (

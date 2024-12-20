@@ -19,7 +19,7 @@ export const ChangeQuantityOfBook: React.FC<{ book: BookModel }> = (props) => {
             setRemaining(book.copiesAvailable || 0);
         };
         fetchBookInState();
-    }, []);
+    }, [book]);
 
     const increaseQuantity = async () => {
         if (
@@ -146,7 +146,9 @@ export const ChangeQuantityOfBook: React.FC<{ book: BookModel }> = (props) => {
                     Add Quantity
                 </button>
                 <button
-                    className="m-1 btn btn-md btn-warning"
+                    className={`m-1 btn btn-md btn-warning ${
+                        quantity === 0 ? 'disabled' : ''
+                    }`}
                     onClick={decreaseQuantity}
                 >
                     Decrease Quantity
