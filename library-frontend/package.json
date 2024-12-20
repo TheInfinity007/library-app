@@ -20,7 +20,10 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start":"npm run start:https:mac:linux",
+    "start:http": "react-scripts start",
+    "start:https:mac:linux": "HTTPS=true react-scripts start",
+    "start:https:windows": "set HTTPS=true&&react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
