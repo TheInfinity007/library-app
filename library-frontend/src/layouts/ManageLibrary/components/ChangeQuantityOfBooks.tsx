@@ -3,6 +3,7 @@ import BookModel from '../../../models/BookModel';
 import { SpinnerLoading } from '../../Utils/SpinnerLoading';
 import { Pagination } from '../../Utils/Pagination';
 import { ChangeQuantityOfBook } from './ChangeQuantityOfBook';
+import { BE_BASE_URL } from '../../../config';
 
 export const ChangeQuantityOfBooks = () => {
     const [books, setBooks] = useState<BookModel[]>([]);
@@ -20,7 +21,7 @@ export const ChangeQuantityOfBooks = () => {
     // Search books useEffect
     useEffect(() => {
         const fetchBooks = async () => {
-            const baseUrl: string = 'http://localhost:8080/api/books';
+            const baseUrl: string = `${BE_BASE_URL}/api/books`;
 
             let url: string = `${baseUrl}?page=${
                 currentPage - 1

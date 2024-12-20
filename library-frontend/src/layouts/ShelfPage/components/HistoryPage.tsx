@@ -4,6 +4,7 @@ import HistoryModel from '../../../models/HistoryModel';
 import { SpinnerLoading } from '../../Utils/SpinnerLoading';
 import { Link } from 'react-router-dom';
 import { Pagination } from '../../Utils/Pagination';
+import { BE_BASE_URL } from '../../../config';
 
 export const HistoryPage = () => {
     const { authState } = useOktaAuth();
@@ -27,7 +28,7 @@ export const HistoryPage = () => {
                 return;
             }
 
-            const baseUrl: string = `http://localhost:8080/api/histories`;
+            const baseUrl: string = `${BE_BASE_URL}/api/histories`;
 
             const userEmail = authState.accessToken?.claims.sub;
             const url: string = `${baseUrl}/search/findBooksByUserEmail?userEmail=${userEmail}&page=${

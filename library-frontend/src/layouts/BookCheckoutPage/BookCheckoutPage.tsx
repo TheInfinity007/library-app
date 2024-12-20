@@ -7,6 +7,7 @@ import ReviewModel from '../../models/ReviewModel';
 import { LatestReviews } from './LatestReviews';
 import { useOktaAuth } from '@okta/okta-react';
 import ReviewRequestModel from '../../models/ReviewRequestModel';
+import { BE_BASE_URL } from '../../config';
 
 export const BookCheckoutPage = () => {
     const { authState } = useOktaAuth();
@@ -38,7 +39,7 @@ export const BookCheckoutPage = () => {
     //Fetch Book use effect
     useEffect(() => {
         const fetchBook = async () => {
-            const baseUrl: string = `http://localhost:8080/api/books`;
+            const baseUrl: string = `${BE_BASE_URL}/api/books`;
 
             const url: string = `${baseUrl}/${bookId}`;
 
@@ -74,7 +75,7 @@ export const BookCheckoutPage = () => {
     // Fetch Reviews use effect
     useEffect(() => {
         const fetchReviews = async () => {
-            const reviewUrl: string = `http://localhost:8080/api/reviews/search/findByBookId?bookId=${bookId}`;
+            const reviewUrl: string = `${BE_BASE_URL}/api/reviews/search/findByBookId?bookId=${bookId}`;
 
             const responseReviews = await fetch(reviewUrl);
 
@@ -128,7 +129,7 @@ export const BookCheckoutPage = () => {
                 return;
             }
 
-            const baseUrl: string = `http://localhost:8080/api/reviews`;
+            const baseUrl: string = `${BE_BASE_URL}/api/reviews`;
 
             const url: string = `${baseUrl}/secure/user/book?bookId=${bookId}`;
 
@@ -166,7 +167,7 @@ export const BookCheckoutPage = () => {
                 return;
             }
 
-            const baseUrl: string = `http://localhost:8080/api/books`;
+            const baseUrl: string = `${BE_BASE_URL}/api/books`;
 
             const url: string = `${baseUrl}/secure/currentloans/count`;
 
@@ -203,7 +204,7 @@ export const BookCheckoutPage = () => {
                 return;
             }
 
-            const baseUrl: string = `http://localhost:8080/api/books`;
+            const baseUrl: string = `${BE_BASE_URL}/api/books`;
 
             const url: string = `${baseUrl}/secure/ischeckedout/byuser?bookId=${bookId}`;
 
@@ -254,7 +255,7 @@ export const BookCheckoutPage = () => {
     }
 
     const checkoutBook = async () => {
-        const baseUrl: string = `http://localhost:8080/api/books`;
+        const baseUrl: string = `${BE_BASE_URL}/api/books`;
 
         const url: string = `${baseUrl}/secure/checkout?bookId=${bookId}`;
 
@@ -289,7 +290,7 @@ export const BookCheckoutPage = () => {
             reviewDescription
         );
 
-        const baseUrl: string = `http://localhost:8080/api/reviews`;
+        const baseUrl: string = `${BE_BASE_URL}/api/reviews`;
 
         const url: string = `${baseUrl}/secure`;
 

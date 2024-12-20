@@ -1,6 +1,7 @@
 import { useOktaAuth } from '@okta/okta-react';
 import React, { useState } from 'react';
 import AddBookRequest from '../../../models/AddBookRequest';
+import { BE_BASE_URL } from '../../../config';
 
 export const AddNewBook: React.FC<{}> = (props) => {
     const { authState } = useOktaAuth();
@@ -41,7 +42,7 @@ export const AddNewBook: React.FC<{}> = (props) => {
     };
 
     const submitNewBook = async () => {
-        const url: string = `http://localhost:8080/api/admin/secure/add/book`;
+        const url: string = `${BE_BASE_URL}/api/admin/secure/add/book`;
 
         if (
             authState?.isAuthenticated &&

@@ -2,6 +2,7 @@ import { useOktaAuth } from '@okta/okta-react';
 import React, { useState } from 'react';
 import { SpinnerLoading } from '../../Utils/SpinnerLoading';
 import MessageModel from '../../../models/MessageModel';
+import { BE_BASE_URL } from '../../../config';
 
 export const PostNewMessage = () => {
     const { authState } = useOktaAuth();
@@ -13,7 +14,7 @@ export const PostNewMessage = () => {
 
     const submitNewQuestion = async () => {
         if (authState?.isAuthenticated && title && question) {
-            const baseUrl: string = `http://localhost:8080/api/messages`;
+            const baseUrl: string = `${BE_BASE_URL}/api/messages`;
 
             const url: string = `${baseUrl}/secure`;
 

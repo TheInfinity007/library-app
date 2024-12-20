@@ -3,6 +3,7 @@ import { ReturnBook } from './ReturnBook';
 import BookModel from '../../../models/BookModel';
 import { SpinnerLoading } from '../../Utils/SpinnerLoading';
 import { Link } from 'react-router-dom';
+import { BE_BASE_URL } from '../../../config';
 
 export const Carousel = () => {
     const [books, setBooks] = useState<BookModel[]>([]);
@@ -11,7 +12,7 @@ export const Carousel = () => {
 
     useEffect(() => {
         const fetchBooks = async () => {
-            const baseUrl: string = 'http://localhost:8080/api/books';
+            const baseUrl: string = `${BE_BASE_URL}/api/books`;
 
             const url: string = `${baseUrl}?page=0&size=9`;
 

@@ -3,6 +3,7 @@ import ReviewModel from '../../../models/ReviewModel';
 import { SpinnerLoading } from '../../Utils/SpinnerLoading';
 import { Review } from '../../Utils/Review';
 import { Pagination } from '../../Utils/Pagination';
+import { BE_BASE_URL } from '../../../config';
 
 export const ReviewListPage = () => {
     const [reviews, setReviews] = useState<ReviewModel[]>([]);
@@ -20,7 +21,7 @@ export const ReviewListPage = () => {
     // Fetch Reviews use effect
     useEffect(() => {
         const fetchReviews = async () => {
-            const baseUrl: string = `http://localhost:8080/api/reviews`;
+            const baseUrl: string = `${BE_BASE_URL}/api/reviews`;
 
             const url: string = `${baseUrl}/search/findByBookId?bookId=${bookId}&page=${
                 currentPage - 1
@@ -102,10 +103,13 @@ export const ReviewListPage = () => {
                 ))}
             </div>
 
-            {totalPages > 1 && 
-            
-            <Pagination currentPage={currentPage} totalPages={totalPages} paginate={paginate} />
-            }
+            {totalPages > 1 && (
+                <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    paginate={paginate}
+                />
+            )}
         </div>
     );
 };
