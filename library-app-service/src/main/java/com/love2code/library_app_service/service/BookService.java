@@ -74,7 +74,11 @@ public class BookService {
             throw new Exception("Outstanding fees");
         }
 
+
         // Start the checkout
+        Payment payment = new Payment(userEmail);
+        paymentRepository.save(payment);
+
         book.setCopiesAvailable(book.getCopiesAvailable() - 1);
         bookRepository.save(book);
 
@@ -151,6 +155,20 @@ public class BookService {
         book.setCopiesAvailable(book.getCopiesAvailable() + 1);
 
         bookRepository.save(book);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date currentDate = sdf.parse(LocalDate.now().toString());
+        Date returnDate = sdf.parse(checkout.getReturnDate());
+
+        TimeUnit time = TimeUnit.DAYS;
+
+        double differenceInTime = time.convert(returnDate.getTime() - currentDate.getTime(), TimeUnit.MILLISECONDS);
+        if (differenceInTime < 0) {
+            Payment payment = paymentRepository.findByUserEmail(userEmail);
+
+            payment.setAmount(payment.getAmount() + (differenceInTime * -1));
+            paymentRepository.save(payment);
+        }
 
         // Remove checkout
         checkoutRepository.deleteById(checkout.getId());
