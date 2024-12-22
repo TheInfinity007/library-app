@@ -3,13 +3,16 @@ package com.love2code.library_app_service.service;
 import com.love2code.library_app_service.dao.BookRepository;
 import com.love2code.library_app_service.dao.CheckoutRepository;
 import com.love2code.library_app_service.dao.HistoryRepository;
+import com.love2code.library_app_service.dao.PaymentRepository;
 import com.love2code.library_app_service.entity.Book;
 import com.love2code.library_app_service.entity.Checkout;
 import com.love2code.library_app_service.entity.History;
+import com.love2code.library_app_service.entity.Payment;
 import com.love2code.library_app_service.responsemodels.ShelfCurrentLoansResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -24,12 +27,15 @@ public class BookService {
     private final BookRepository bookRepository;
     private final CheckoutRepository checkoutRepository;
     private final HistoryRepository historyRepository;
+    private final PaymentRepository paymentRepository;
+
 
     // Constructor dependency injection
-    public BookService(BookRepository bookRepository, CheckoutRepository checkoutRepository, HistoryRepository historyRepository) {
+    public BookService(BookRepository bookRepository, CheckoutRepository checkoutRepository, HistoryRepository historyRepository, PaymentRepository paymentRepository) {
         this.bookRepository = bookRepository;
         this.checkoutRepository = checkoutRepository;
         this.historyRepository = historyRepository;
+        this.paymentRepository = paymentRepository;
     }
 
     public Book checkoutBook(String userEmail, Long bookId) throws Exception {
@@ -46,6 +52,29 @@ public class BookService {
             throw new Exception("Book doesn't exist or already checked out by user");
         }
 
+        // Check for any book dues for return before checking out a new book
+        List<Checkout> currentBooksCheckedOut = checkoutRepository.findBooksByUserEmail(userEmail);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        boolean hasBookDue = false;
+        Date currentDate = sdf.parse(LocalDate.now().toString());
+
+        for (Checkout checkout : currentBooksCheckedOut) {
+            Date checkoutDate = sdf.parse(checkout.getReturnDate());
+
+            TimeUnit time = TimeUnit.DAYS;
+            double differenceInTime = time.convert(checkoutDate.getTime() - currentDate.getTime(), TimeUnit.MILLISECONDS);
+            if (differenceInTime < 0) {
+                hasBookDue = true;
+                break;
+            }
+        }
+
+        Payment userPayment = paymentRepository.findByUserEmail(userEmail);
+        if ((userPayment != null && userPayment.getAmount() > 0) || hasBookDue) {
+            throw new Exception("Outstanding fees");
+        }
+
+        // Start the checkout
         book.setCopiesAvailable(book.getCopiesAvailable() - 1);
         bookRepository.save(book);
 
