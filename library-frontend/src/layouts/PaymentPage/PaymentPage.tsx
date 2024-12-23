@@ -146,6 +146,7 @@ export const PaymentPage = () => {
                         <h5 className="card-title mb-3">Credit Card</h5>
                         <CardElement id="card-element" />
                         <button
+                            onClick={checkout}
                             type="button"
                             disabled={submitDisabled}
                             className="btn btn-md main-color text-white mt-3"
