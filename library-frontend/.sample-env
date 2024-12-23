@@ -3,3 +3,4 @@ REACT_APP_OKTA_DOMAIN="dev-some-number"
 REACT_APP_HTTPS_ENABLED=true
 SSL_CRT_FILE='ssl-localhost/localhost.crt'
 SSL_KEY_FILE='ssl-localhost/localhost.key'
+REACT_APP_STRIPE_PUBLISHABLE_KEY='stripe-publishable-key'
