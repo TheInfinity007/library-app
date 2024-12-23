@@ -21,7 +21,7 @@ public class PaymentController {
         this.paymentService = paymentService;
     }
 
-    @PostMapping("/payment-intent")
+    @PostMapping("/secure/payment-intent")
     public ResponseEntity<String> createPaymentIntent(@RequestBody PaymentInfoRequest paymentInfoRequest) throws StripeException {
         PaymentIntent paymentIntent = paymentService.createPaymentIntent(paymentInfoRequest);
 
@@ -29,7 +29,7 @@ public class PaymentController {
         return new ResponseEntity<>(responseBody, HttpStatus.OK);
     }
 
-    @PutMapping("/payment-complete")
+    @PutMapping("/secure/payment-complete")
     public ResponseEntity<String> stripePaymentComplete(@RequestHeader(name = "Authorization") String token) throws Exception {
         String userEmail = ExtractJWT.payloadJWTExtraction(token, "sub");
 
@@ -38,7 +38,7 @@ public class PaymentController {
         }
 
         paymentService.stripePayment(userEmail);
-        
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

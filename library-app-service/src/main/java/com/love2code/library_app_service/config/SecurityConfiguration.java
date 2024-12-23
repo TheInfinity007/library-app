@@ -33,7 +33,9 @@ public class SecurityConfiguration {
                                 "/api/books/secure/**",
                                 "/api/reviews/secure/**",
                                 "/api/messages/secure/**",
-                                "/api/admin/secure/**")
+                                "/api/admin/secure/**",
+                                "/api/payments/secure/**"
+                        )
                         .authenticated()
                         // allow for rest of the routes without auth
                         .anyRequest().permitAll()
