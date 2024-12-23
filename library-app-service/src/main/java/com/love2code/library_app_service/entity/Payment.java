@@ -19,6 +19,9 @@ public class Payment {
     @Column(name = "amount")
     private double amount;
 
+    public Payment() {
+    }
+
     public Payment(String userEmail) {
         this.userEmail = userEmail;
         this.amount = 00.00;
