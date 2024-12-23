@@ -2,13 +2,14 @@ import { useOktaAuth } from '@okta/okta-react';
 import React, { useState, useEffect } from 'react';
 import { SpinnerLoading } from '../Utils/SpinnerLoading';
 import { BE_BASE_URL } from '../../config';
-import { CardElement } from '@stripe/react-stripe-js';
+import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import { Link } from 'react-router-dom';
+import PaymentInfoRequest from '../../models/PaymentInfoRequest';
 
 export const PaymentPage = () => {
     const { authState } = useOktaAuth();
 
-    const [httpError, setHttpError] = useState(null);
+    const [httpError, setHttpError] = useState(false);
     const [submitDisabled, setSubmitDisabled] = useState(false);
     const [fees, setFees] = useState(0);
     const [loadingFees, setLoadingFees] = useState(true);
@@ -38,6 +39,88 @@ export const PaymentPage = () => {
             setHttpError(err.message);
         });
     }, [authState]);
+
+    const elements = useElements();
+    const stripe = useStripe();
+
+    const checkout = async () => {
+        if (!stripe || !elements || !elements.getElement(CardElement)) {
+            return;
+        }
+
+        setSubmitDisabled(true);
+
+        const userEmail = authState?.accessToken?.claims.sub;
+        let paymentInfo: PaymentInfoRequest = new PaymentInfoRequest(
+            Math.round(fees * 100),
+            'usd',
+            userEmail
+        );
+
+        const url = `${BE_BASE_URL}/api/payments/secure/payment-intent`;
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${authState?.accessToken?.accessToken}`,
+            },
+            body: JSON.stringify(paymentInfo),
+        };
+        const response = await fetch(url, requestOptions);
+
+        if (!response.ok) {
+            setHttpError(true);
+            setSubmitDisabled(false);
+            throw new Error('Something went wrong');
+        }
+
+        const stripeResponse = await response.json();
+
+        const { client_secret: clientSecret } = stripeResponse;
+        const confirmCardPaymentData = {
+            payment_method: {
+                card: elements.getElement(CardElement)!,
+                billing_details: {
+                    email: userEmail,
+                },
+            },
+        };
+
+        const options = {
+            handleActions: false,
+        };
+
+        stripe
+            .confirmCardPayment(clientSecret, confirmCardPaymentData, options)
+            .then(async (result: any) => {
+                if (result.error) {
+                    setHttpError(result.error.message);
+                    setSubmitDisabled(false);
+                    alert('Payment failed');
+                } else {
+                    const url = `${BE_BASE_URL}/api/payments/secure/payment-complete`;
+                    const requestOptions = {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: `Bearer ${authState?.accessToken?.accessToken}`,
+                        },
+                    };
+                    const response = await fetch(url, requestOptions);
+
+                    if (!response.ok) {
+                        setHttpError(true);
+                        setSubmitDisabled(false);
+                        throw new Error('Something went wrong');
+                    }
+
+                    setFees(0);
+                    setSubmitDisabled(false);
+                }
+            });
+
+        setHttpError(false);
+    };
 
     if (loadingFees) {
         return <SpinnerLoading />;
