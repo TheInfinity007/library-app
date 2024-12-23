@@ -67,7 +67,7 @@ export const Navbar = () => {
                                         to="/fees"
                                         className="nav-link"
                                     >
-                                        Fees
+                                        Pay Fees
                                     </NavLink>
                                 </li>
                             </>
