@@ -62,6 +62,14 @@ export const Navbar = () => {
                                         Messages
                                     </NavLink>
                                 </li>
+                                <li className="nav-item">
+                                    <NavLink
+                                        to="/fees"
+                                        className="nav-link"
+                                    >
+                                        Pay Fees
+                                    </NavLink>
+                                </li>
                             </>
                         )}
                         {authState.isAuthenticated &&
