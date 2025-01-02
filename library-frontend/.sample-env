@@ -1,6 +1,7 @@
-REACT_APP_OKTA_CLIENT_ID="your-okta-oidc-app-client-id"
-REACT_APP_OKTA_DOMAIN="dev-some-number"
-REACT_APP_HTTPS_ENABLED=true
-SSL_CRT_FILE='ssl-localhost/localhost.crt'
-SSL_KEY_FILE='ssl-localhost/localhost.key'
-REACT_APP_STRIPE_PUBLISHABLE_KEY='stripe-publishable-key'
+REACT_APP_BE_BASE_URL="https://localhost:8443"          # Backend server URL
+REACT_APP_HTTPS_ENABLED=true                        # Set to true if client server is running on HTTPS
+REACT_APP_OKTA_CLIENT_ID="your-okta-oidc-app-client-id" # Okta OIDC client ID
+REACT_APP_OKTA_DOMAIN="dev-some-number"                # Okta domain
+REACT_APP_STRIPE_PUBLISHABLE_KEY='stripe-publishable-key' # Stripe publishable key
+SSL_CRT_FILE='ssl-localhost/localhost.crt'           # SSL certificate file (self signed)
+SSL_KEY_FILE='ssl-localhost/localhost.key'          # SSL key file (self signed)
