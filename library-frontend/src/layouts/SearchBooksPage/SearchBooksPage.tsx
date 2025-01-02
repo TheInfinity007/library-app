@@ -160,29 +160,44 @@ export const SearchBooksPage = () => {
                                 aria-labelledby="downdownMenuButton1"
                             >
                                 <li onClick={() => categoryField('All')}>
-                                    <a href="#" className="dropdown-item">
+                                    <button
+                                        type="button"
+                                        className="dropdown-item"
+                                    >
                                         All
-                                    </a>
+                                    </button>
                                 </li>
                                 <li onClick={() => categoryField('FE')}>
-                                    <a href="#" className="dropdown-item">
+                                    <button
+                                        type="button"
+                                        className="dropdown-item"
+                                    >
                                         Front End
-                                    </a>
+                                    </button>
                                 </li>
                                 <li onClick={() => categoryField('BE')}>
-                                    <a href="#" className="dropdown-item">
+                                    <button
+                                        type="button"
+                                        className="dropdown-item"
+                                    >
                                         Back End
-                                    </a>
+                                    </button>
                                 </li>
                                 <li onClick={() => categoryField('Data')}>
-                                    <a href="#" className="dropdown-item">
+                                    <button
+                                        type="button"
+                                        className="dropdown-item"
+                                    >
                                         Data
-                                    </a>
+                                    </button>
                                 </li>
                                 <li onClick={() => categoryField('DevOps')}>
-                                    <a href="#" className="dropdown-item">
+                                    <button
+                                        type="button"
+                                        className="dropdown-item"
+                                    >
                                         DevOps
-                                    </a>
+                                    </button>
                                 </li>
                             </ul>
                         </div>
