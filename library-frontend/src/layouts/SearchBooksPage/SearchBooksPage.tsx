@@ -4,6 +4,7 @@ import { SpinnerLoading } from '../Utils/SpinnerLoading';
 import { SearchBook } from './components/SearchBook';
 import { Pagination } from '../Utils/Pagination';
 import { BE_BASE_URL } from '../../config';
+import { Link } from 'react-router-dom';
 
 export const SearchBooksPage = () => {
     const [books, setBooks] = useState<BookModel[]>([]);
@@ -222,13 +223,13 @@ export const SearchBooksPage = () => {
                     ) : (
                         <div className="m-5">
                             <h3>Can't find what you are looking for ?</h3>
-                            <a
-                                href="#"
+                            <Link
+                                to="/messages"
                                 type="button"
                                 className="btn main-color btn-md px-4 me-md-2 fw-bold text-white"
                             >
                                 Library Services
-                            </a>
+                            </Link>
                         </div>
                     )}
 
