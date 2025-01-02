@@ -4,6 +4,7 @@ import { SpinnerLoading } from '../Utils/SpinnerLoading';
 import { SearchBook } from './components/SearchBook';
 import { Pagination } from '../Utils/Pagination';
 import { BE_BASE_URL } from '../../config';
+import { Link } from 'react-router-dom';
 
 export const SearchBooksPage = () => {
     const [books, setBooks] = useState<BookModel[]>([]);
@@ -70,7 +71,7 @@ export const SearchBooksPage = () => {
 
         // scroll the page to top
         window.scrollTo(0, 0);
-    }, [currentPage, searchUrl]);
+    }, [booksPerPage, currentPage, searchUrl]);
 
     // Handle Loading
     if (isLoading) {
@@ -160,29 +161,44 @@ export const SearchBooksPage = () => {
                                 aria-labelledby="downdownMenuButton1"
                             >
                                 <li onClick={() => categoryField('All')}>
-                                    <a href="#" className="dropdown-item">
+                                    <button
+                                        type="button"
+                                        className="dropdown-item"
+                                    >
                                         All
-                                    </a>
+                                    </button>
                                 </li>
                                 <li onClick={() => categoryField('FE')}>
-                                    <a href="#" className="dropdown-item">
+                                    <button
+                                        type="button"
+                                        className="dropdown-item"
+                                    >
                                         Front End
-                                    </a>
+                                    </button>
                                 </li>
                                 <li onClick={() => categoryField('BE')}>
-                                    <a href="#" className="dropdown-item">
+                                    <button
+                                        type="button"
+                                        className="dropdown-item"
+                                    >
                                         Back End
-                                    </a>
+                                    </button>
                                 </li>
                                 <li onClick={() => categoryField('Data')}>
-                                    <a href="#" className="dropdown-item">
+                                    <button
+                                        type="button"
+                                        className="dropdown-item"
+                                    >
                                         Data
-                                    </a>
+                                    </button>
                                 </li>
                                 <li onClick={() => categoryField('DevOps')}>
-                                    <a href="#" className="dropdown-item">
+                                    <button
+                                        type="button"
+                                        className="dropdown-item"
+                                    >
                                         DevOps
-                                    </a>
+                                    </button>
                                 </li>
                             </ul>
                         </div>
@@ -207,13 +223,13 @@ export const SearchBooksPage = () => {
                     ) : (
                         <div className="m-5">
                             <h3>Can't find what you are looking for ?</h3>
-                            <a
-                                href="#"
+                            <Link
+                                to="/messages"
                                 type="button"
                                 className="btn main-color btn-md px-4 me-md-2 fw-bold text-white"
                             >
                                 Library Services
-                            </a>
+                            </Link>
                         </div>
                     )}
 
