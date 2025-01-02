@@ -1,6 +1,5 @@
 import { useOktaAuth } from '@okta/okta-react';
 import React, { useState } from 'react';
-import { SpinnerLoading } from '../../Utils/SpinnerLoading';
 import MessageModel from '../../../models/MessageModel';
 import { BE_BASE_URL } from '../../../config';
 
