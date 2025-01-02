@@ -12,7 +12,6 @@ import com.love2code.library_app_service.responsemodels.ShelfCurrentLoansRespons
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
